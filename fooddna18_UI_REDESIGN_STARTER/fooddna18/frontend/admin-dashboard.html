@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Super Admin Dashboard - Food DNA</title>
+    <meta name="description" content="Platform governance, restaurant approvals, and system metrics on Food DNA.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body class="fd-app-body">
+    <div class="fd-app-layout">
+        <!-- Dual-zone sidebar -->
+        <div id="sidebar"></div>
+
+        <div class="fd-content-wrapper">
+            <!-- Topbar -->
+            <div id="topbar"></div>
+
+            <main class="fd-main-content" id="mainContent">
+                <!-- Page Header -->
+                <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+                    <div>
+                        <div class="d-flex align-items-center gap-2 mb-1">
+                            <h1 class="fd-page-title mb-0">Platform Overview</h1>
+                            <span class="fd-badge fd-badge-primary">Super Admin</span>
+                        </div>
+                        <p class="text-secondary mb-0">Oversee platform restaurants, partner applications, and governance.</p>
+                    </div>
+                    <div>
+                        <a href="admin-users.html" class="btn btn-fd btn-sm">Manage Users & Roles →</a>
+                    </div>
+                </div>
+
+                <div id="pageMessage"></div>
+
+                <!-- KPI Metric Cards (Collage Screen 20) -->
+                <div class="row g-3 mb-4">
+                    <div class="col-sm-6 col-xl-4">
+                        <div class="fd-card p-4">
+                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                <span class="text-secondary small fw-semibold text-uppercase tracking-wider">Pending Approvals</span>
+                                <span class="fd-badge fd-badge-warning">Queue</span>
+                            </div>
+                            <div class="display-6 fw-bold" id="kpiPendingApprovals" style="color: var(--fd-primary);">0</div>
+                            <div class="small text-secondary mt-1">Restaurant onboarding applications waiting</div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-xl-4">
+                        <div class="fd-card p-4">
+                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                <span class="text-secondary small fw-semibold text-uppercase tracking-wider">Total Restaurants</span>
+                                <span class="fd-badge fd-badge-success">Registered</span>
+                            </div>
+                            <div class="display-6 fw-bold" id="kpiTotalRestaurants">0</div>
+                            <div class="small text-secondary mt-1">Platform partners & applicants</div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-xl-4">
+                        <div class="fd-card p-4">
+                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                <span class="text-secondary small fw-semibold text-uppercase tracking-wider">Platform Users</span>
+                                <span class="fd-badge fd-badge-neutral">Accounts</span>
+                            </div>
+                            <div class="display-6 fw-bold" id="kpiTotalUsers">0</div>
+                            <div class="small text-secondary mt-1">Customers, operators, riders & admins</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Admin Tabs -->
+                <div class="d-flex gap-2 mb-4">
+                    <button type="button" class="fd-pill active" data-admin-tab="approvals">Restaurant Approvals</button>
+                    <button type="button" class="fd-pill" data-admin-tab="restaurants">Registered Restaurants</button>
+                </div>
+
+                <!-- Tab 1: Approvals Queue -->
+                <div id="tabContentApprovals">
+                    <div class="fd-card p-4">
+                        <h2 class="h5 fw-bold mb-3">Partner Applications Queue</h2>
+                        <div id="approvalsList" class="table-responsive">
+                            <div class="p-3 text-center text-secondary small">Loading application queue...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 2: Restaurants Directory -->
+                <div id="tabContentRestaurants" hidden>
+                    <div class="fd-card p-4">
+                        <h2 class="h5 fw-bold mb-3">All Platform Restaurants</h2>
+                        <div id="restaurantsList" class="table-responsive">
+                            <div class="p-3 text-center text-secondary small">Loading restaurants...</div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/layout.js"></script>
+    <script src="js/admin-dashboard.js"></script>
+</body>
+</html>
