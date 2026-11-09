@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Menu - Food DNA</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+<div id="navbar"></div>
+<main class="container pb-5">
+    <a href="restaurants.html" class="d-inline-block mb-3">&larr; Back to restaurants</a>
+    <div id="restaurantHeader" class="mb-4"></div>
+    <div id="menuContent" hidden>
+        <div class="d-flex justify-content-between align-items-end mb-2">
+            <h2 class="h5 mb-0">Menu</h2>
+            <div class="text-secondary small" id="mealSummary" aria-live="polite"></div>
+        </div>
+        <form id="filterForm" class="fd-card fd-filter mb-4" novalidate>
+            <div class="row g-2 align-items-end">
+                <div class="col-12 col-md-6 col-lg-4">
+                    <label class="form-label small mb-1" for="fSearch">Search dishes</label>
+                    <input id="fSearch" name="q" type="search" maxlength="100" class="form-control" placeholder="e.g. paneer, biryani">
+                </div>
+            <div class="col-6 col-md-3 col-lg-2">
+                <label class="form-label small mb-1" for="fCategory">Category</label>
+                <select id="fCategory" name="category_id" class="form-select"><option value="">All</option></select>
+            </div>
+            <div class="col-6 col-md-3 col-lg-2">
+                <label class="form-label small mb-1" for="fCuisine">Cuisine</label>
+                <select id="fCuisine" name="cuisine" class="form-select"><option value="">All</option></select>
+            </div>
+            <div class="col-6 col-md-3 col-lg-2">
+                <label class="form-label small mb-1" for="fMealType">Meal type</label>
+                <select id="fMealType" name="meal_type" class="form-select"><option value="">All</option></select>
+            </div>
+            <div class="col-6 col-md-3 col-lg-2">
+                <label class="form-label small mb-1" for="fFoodType">Food type</label>
+                <select id="fFoodType" name="food_type" class="form-select"><option value="">All</option></select>
+            </div>
+            <div class="col-6 col-md-3 col-lg-2">
+                <label class="form-label small mb-1" for="fDietary">Dietary</label>
+                <select id="fDietary" name="dietary_preference" class="form-select"><option value="">All</option></select>
+            </div>
+            <div class="col-6 col-md-3 col-lg-2">
+                <label class="form-label small mb-1" for="fSpice">Spice level</label>
+                <select id="fSpice" name="spice_level" class="form-select"><option value="">All</option></select>
+            </div>
+            <div class="col-6 col-md-3 col-lg-2">
+                <label class="form-label small mb-1" for="fMin">Min price</label>
+                <input id="fMin" name="min_price" type="text" inputmode="decimal" class="form-control" placeholder="0">
+            </div>
+            <div class="col-6 col-md-3 col-lg-2">
+                <label class="form-label small mb-1" for="fMax">Max price</label>
+                <input id="fMax" name="max_price" type="text" inputmode="decimal" class="form-control" placeholder="Any">
+            </div>
+            <div class="col-12 col-md-6 col-lg-2">
+                <label class="form-label small mb-1" for="fSort">Sort by</label>
+                <select id="fSort" name="sort" class="form-select">
+                    <option value="">Name (A-Z)</option>
+                    <option value="price_asc">Price: low to high</option>
+                    <option value="price_desc">Price: high to low</option>
+                </select>
+            </div>
+            <div class="col-12 col-lg-auto d-flex gap-2">
+                <button class="btn btn-fd" type="submit">Apply</button>
+                <button class="btn btn-outline-dark" type="button" id="resetFilters">Reset</button>
+            </div>
+        </div>
+        <div id="filterMessage" class="mt-2"></div>
+    </form>
+        <div id="mealResults" aria-live="polite"></div>
+        <div id="mealPager"></div>
+    </div>
+</main>
+<script src="js/api.js"></script>
+<script src="js/layout.js"></script>
+<script src="js/browse.js"></script>
+<script>initRestaurantMenuPage();</script>
+</body>
+</html>
