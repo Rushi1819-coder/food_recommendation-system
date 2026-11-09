@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Partner Application - Food DNA</title>
+    <meta name="description" content="Apply to partner with Food DNA and grow your kitchen with personalized AI taste discovery.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body class="fd-auth-page">
+    <div id="navbar"></div>
+
+    <div class="fd-auth-container">
+        <!-- Visual Brand Side -->
+        <div class="fd-auth-visual">
+            <div class="fd-auth-brand-badge">
+                <span class="fs-4">🥗</span>
+                <span>Food DNA Partners</span>
+            </div>
+            <div class="fd-auth-tagline">
+                <h2>Scale your kitchen with Food DNA.</h2>
+                <p>Join an elite culinary network where AI matches your signature recipes to diners who love your exact spice, cuisine, and taste profile.</p>
+            </div>
+            <div class="d-flex gap-3 align-items-center">
+                <div class="d-flex -space-x-2">
+                    <div class="rounded-circle bg-white text-dark d-flex align-items-center justify-content-center fw-bold" style="width: 38px; height: 38px; border: 2px solid #FFF;">🍱</div>
+                </div>
+                <div class="small text-white-50">
+                    Trusted by passionate kitchens & independent chefs.
+                </div>
+            </div>
+        </div>
+
+        <!-- Form Side -->
+        <div class="fd-auth-form-wrapper">
+            <div class="fd-auth-header">
+                <h1 class="fd-auth-title">Partner Application</h1>
+                <p class="fd-auth-subtitle">Applications are reviewed and approved by Super Admin before activation.</p>
+            </div>
+
+            <div id="message"></div>
+
+            <form id="applyForm" novalidate>
+                <div class="text-uppercase small fw-bold text-secondary mb-3 pb-1 border-bottom">Admin Credentials</div>
+
+                <div class="mb-3">
+                    <label for="full_name" class="form-label small fw-semibold">Full Name *</label>
+                    <input type="text" class="form-control" id="full_name" name="full_name" placeholder="Letters and spaces only" required autocomplete="name">
+                </div>
+
+                <div class="mb-3">
+                    <label for="email" class="form-label small fw-semibold">Email (@gmail.com) *</label>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="partner@gmail.com" required autocomplete="email">
+                </div>
+
+                <div class="row g-2 mb-3">
+                    <div class="col-sm-6">
+                        <label for="password" class="form-label small fw-semibold">Password *</label>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="≥8 chars, upper, lower, num, sym" required autocomplete="new-password">
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="confirm_password" class="form-label small fw-semibold">Confirm Password *</label>
+                        <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Re-type password" required autocomplete="new-password">
+                    </div>
+                </div>
+
+                <div class="text-uppercase small fw-bold text-secondary mt-4 mb-3 pb-1 border-bottom">Restaurant Profile</div>
+
+                <div class="mb-3">
+                    <label for="restaurant_name" class="form-label small fw-semibold">Restaurant Name *</label>
+                    <input type="text" class="form-control" id="restaurant_name" name="restaurant_name" placeholder="e.g. Royal Spice Kitchen" required maxlength="150">
+                </div>
+
+                <div class="mb-3">
+                    <label for="restaurant_address" class="form-label small fw-semibold">Physical Restaurant Address *</label>
+                    <textarea class="form-control" id="restaurant_address" name="restaurant_address" rows="2" placeholder="Full address with landmark & pincode" required></textarea>
+                </div>
+
+                <div class="row g-2 mb-4">
+                    <div class="col-sm-6">
+                        <label for="restaurant_phone" class="form-label small fw-semibold">Contact Phone (optional)</label>
+                        <input type="tel" class="form-control" id="restaurant_phone" placeholder="+91 9876543210" maxlength="20">
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="restaurant_email" class="form-label small fw-semibold">Business Email (optional)</label>
+                        <input type="email" class="form-control" id="restaurant_email" placeholder="contact@royalspice.com">
+                    </div>
+                </div>
+
+                <button type="submit" id="submitButton" class="btn btn-fd w-100 py-2">Submit Partner Application</button>
+            </form>
+
+            <div class="text-center mt-3 small">
+                <a href="application-status.html" class="text-secondary text-decoration-none">Already applied? <strong style="color: var(--fd-primary);">Check application status →</strong></a>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/layout.js"></script>
+    <script>
+    const fullNameInput = document.getElementById("full_name");
+    fullNameInput.addEventListener("input", () => {
+        const cleaned = fullNameInput.value.replace(/[^\p{L}\p{M} ]/gu, "");
+        if (cleaned !== fullNameInput.value) fullNameInput.value = cleaned;
+    });
+
+    document.getElementById("applyForm").addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const message = document.getElementById("message");
+        const button = document.getElementById("submitButton");
+        clearMessage(message);
+
+        const value = (id) => document.getElementById(id).value.trim();
+        const full_name = value("full_name");
+        const email = value("email");
+        const password = document.getElementById("password").value;
+        const confirm_password = document.getElementById("confirm_password").value;
+        const restaurant_name = value("restaurant_name");
+        const restaurant_address = value("restaurant_address");
+        const restaurant_phone = value("restaurant_phone");
+        const restaurant_email = value("restaurant_email");
+
+        if (!NAME_RULE.test(full_name)) {
+            return showMessage(message, "danger", "Full name may contain only letters and spaces.");
+        }
+        if (!EMAIL_RULE.test(email)) {
+            return showMessage(message, "danger", "Please enter a valid Gmail address ending in @gmail.com.");
+        }
+        if (!PASSWORD_RULE.test(password)) {
+            return showMessage(message, "danger", "Password: " + PASSWORD_HINT);
+        }
+        if (password !== confirm_password) {
+            return showMessage(message, "danger", "Passwords do not match.");
+        }
+        if (!restaurant_name || !restaurant_address) {
+            return showMessage(message, "danger", "Restaurant name and address are required.");
+        }
+
+        setBusy(button, true, "Submitting...");
+        const result = await apiRequest("/api/auth/restaurant-admin/apply", {
+            method: "POST",
+            body: {
+                full_name, email, password, confirm_password,
+                restaurant_name, restaurant_address,
+                restaurant_phone: restaurant_phone || null,
+                restaurant_email: restaurant_email || null
+            }
+        });
+        setBusy(button, false);
+
+        if (!result.ok) {
+            return showMessage(message, "danger", result.data.error || "Application failed.");
+        }
+
+        document.getElementById("applyForm").reset();
+        showMessage(message, "success",
+            result.data.message + " You can check its status any time on the status page.");
+    });
+    </script>
+</body>
+</html>
