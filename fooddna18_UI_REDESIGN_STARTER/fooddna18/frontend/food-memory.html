@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Memory - Food DNA</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="fd-app-layout">
+    <div id="sidebar"></div>
+
+    <div class="fd-main-wrapper">
+        <div id="topbar"></div>
+
+        <main class="fd-main-content">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
+                <div>
+                    <h1 class="h2 fw-bold mb-1" style="color: var(--fd-plum-dark);">Food Memory</h1>
+                    <p class="text-secondary mb-0">Your food journey, captured. Revisit meals you've loved.</p>
+                </div>
+                <div class="d-flex gap-2">
+                    <button type="button" class="btn btn-fd btn-sm" id="tabFavsBtn">Favourite Meals</button>
+                    <button type="button" class="btn btn-fd-outline btn-sm" id="tabTimelineBtn">Past Searches & Activity</button>
+                </div>
+            </div>
+
+            <div id="memoryMessage" aria-live="polite"></div>
+
+            <!-- Content Container -->
+            <div id="memoryContent" class="row g-4">
+                <div class="col-12 text-center py-5 text-secondary">
+                    <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                    Loading your culinary memories...
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/layout.js"></script>
+<script>
+(async function initFoodMemory() {
+    const user = await requireLogin();
+    if (!user) return;
+    if (user.role !== "customer") {
+        showMessage(document.getElementById("memoryMessage"), "warning", "Food Memory is exclusively available for customer accounts.");
+        return;
+    }
+
+    let activeTab = "favs";
+    const container = document.getElementById("memoryContent");
+    const favBtn = document.getElementById("tabFavsBtn");
+    const timeBtn = document.getElementById("tabTimelineBtn");
+
+    favBtn.addEventListener("click", () => {
+        activeTab = "favs";
+        favBtn.className = "btn btn-fd btn-sm";
+        timeBtn.className = "btn btn-fd-outline btn-sm";
+        loadContent();
+    });
+
+    timeBtn.addEventListener("click", () => {
+        activeTab = "timeline";
+        timeBtn.className = "btn btn-fd btn-sm";
+        favBtn.className = "btn btn-fd-outline btn-sm";
+        loadContent();
+    });
+
+    async function loadContent() {
+        container.innerHTML = `
+            <div class="col-12 text-center py-5 text-secondary">
+                <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                Loading...
+            </div>
+        `;
+
+        if (activeTab === "favs") {
+            // Load delivered orders to show meals ordered
+            const res = await apiRequest("/api/orders?page_size=30");
+            if (!res.ok) {
+                container.innerHTML = '<div class="col-12 text-center text-danger">Could not load food memory.</div>';
+                return;
+            }
+
+            const orders = (res.data.orders || []).filter(o => o.status !== "cancelled");
+            if (orders.length === 0) {
+                container.innerHTML = `
+                    <div class="col-12">
+                        <div class="fd-card p-5 text-center">
+                            <div class="fd-stat-icon mx-auto mb-3">🕒</div>
+                            <h3 class="h5 fw-bold mb-2">No food memories recorded yet</h3>
+                            <p class="text-secondary small mb-3">As you explore and order dishes, your favorite meals and frequency will automatically appear here.</p>
+                            <a href="menu.html" class="btn btn-fd btn-sm">Explore Menu</a>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = "";
+            orders.forEach(order => {
+                const col = document.createElement("div");
+                col.className = "col-md-6 col-lg-4";
+                const dateStr = order.placed_at ? new Date(order.placed_at).toLocaleDateString("en-IN", { month: "short", day: "numeric", year: "numeric" }) : "Recently";
+
+                col.innerHTML = `
+                    <div class="fd-card fd-card-hover p-4 d-flex flex-column h-100">
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <div style="width: 72px; height: 72px; border-radius: 14px; overflow: hidden; flex-shrink: 0; background: var(--fd-cream-dark);">
+                                <img src="img/paneer_tikka.jpg" alt="${order.restaurant_name}" style="width: 100%; height: 100%; object-fit: cover;">
+                            </div>
+                            <div>
+                                <h3 class="h6 fw-bold mb-1" style="color: var(--fd-plum-dark);">${order.restaurant_name}</h3>
+                                <div class="small text-secondary">Order #${order.id} &bull; ${order.item_count} items</div>
+                                <div class="fw-bold small" style="color: var(--fd-plum);">Total: ₹${order.total_amount}</div>
+                            </div>
+                        </div>
+                        <div class="small text-secondary mb-3 mt-auto">
+                            Last ordered: <strong>${dateStr}</strong>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <a href="order-details.html?id=${order.id}" class="btn btn-fd-outline btn-sm flex-grow-1">
+                                View Details
+                            </a>
+                            <a href="restaurant-menu.html?id=${order.restaurant_id}" class="btn btn-fd btn-sm flex-grow-1">
+                                Order Again
+                            </a>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(col);
+            });
+        } else {
+            // Load Food Memory Events
+            const res = await apiRequest("/api/food-memory");
+            if (!res.ok) {
+                container.innerHTML = '<div class="col-12 text-center text-danger">Could not load activity events.</div>';
+                return;
+            }
+
+            const events = res.data.events || [];
+            if (events.length === 0) {
+                container.innerHTML = `
+                    <div class="col-12">
+                        <div class="fd-card p-5 text-center">
+                            <p class="text-secondary mb-0">No past search interactions recorded.</p>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = "";
+            events.forEach(ev => {
+                const col = document.createElement("div");
+                col.className = "col-12";
+                const dateStr = ev.created_at ? new Date(ev.created_at).toLocaleString() : "";
+                col.innerHTML = `
+                    <div class="fd-card p-3 d-flex align-items-center justify-content-between flex-wrap gap-2">
+                        <div class="d-flex align-items-center gap-3">
+                            <span class="fd-badge fd-badge-pending">${ev.event_type.replace('_', ' ')}</span>
+                            <span class="fw-semibold text-secondary small">${JSON.stringify(ev.event_data || {})}</span>
+                        </div>
+                        <span class="small text-secondary">${dateStr}</span>
+                    </div>
+                `;
+                container.appendChild(col);
+            });
+        }
+    }
+
+    loadContent();
+})();
+</script>
+</body>
+</html>
