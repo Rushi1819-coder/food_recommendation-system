@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dish Details - Food DNA</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="fd-app-layout">
+    <div id="sidebar"></div>
+
+    <div class="fd-main-wrapper">
+        <div id="topbar"></div>
+
+        <main class="fd-main-content">
+            <div class="mb-3">
+                <a href="menu.html" class="btn btn-fd-outline btn-sm">
+                    &larr; Back to Food Menu
+                </a>
+            </div>
+
+            <!-- Meal Detail Container -->
+            <div id="mealDetail" aria-live="polite">
+                <div class="text-center py-5 text-secondary">
+                    <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                    Loading dish details...
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/layout.js"></script>
+<script src="js/browse.js"></script>
+<script>
+    initMealDetailPage();
+</script>
+</body>
+</html>
