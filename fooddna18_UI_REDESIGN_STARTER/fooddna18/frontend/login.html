@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log in - Food DNA</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body style="background: var(--fd-cream);">
+
+<div class="fd-auth-wrapper">
+    <!-- Left Hero Side -->
+    <div class="fd-auth-hero d-none d-lg-flex">
+        <div>
+            <div class="d-flex align-items-center gap-2 mb-4">
+                <div class="fd-brand-icon bg-white text-dark" style="color: var(--fd-plum) !important;">🥗</div>
+                <span class="fd-brand-text text-white">Food DNA</span>
+            </div>
+            <h1 class="display-5 fw-bold text-white mb-3" style="line-height: 1.2;">
+                Good Food<br>
+                <span style="color: var(--fd-rose-light);">Better You</span>
+            </h1>
+            <p class="text-white-50" style="max-width: 420px; font-size: 1.05rem;">
+                Personalized meals, based on your taste, budget, and health goals.
+            </p>
+        </div>
+
+        <div class="text-center my-4">
+            <div style="width: 320px; height: 320px; border-radius: 50%; overflow: hidden; margin: 0 auto; box-shadow: 0 16px 40px rgba(0,0,0,0.3); border: 6px solid rgba(255,255,255,0.15);">
+                <img src="img/hero_bowl.jpg" alt="Healthy Meal Bowl" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center text-white-50 small border-top pt-3 border-secondary">
+            <span>© Food DNA System</span>
+            <a href="index.html" class="text-white text-decoration-none">← Back to Homepage</a>
+        </div>
+    </div>
+
+    <!-- Right Form Side -->
+    <div class="fd-auth-form-side">
+        <div class="fd-auth-form-card">
+            <div class="d-lg-none text-center mb-4">
+                <div class="fd-brand-icon mx-auto mb-2">🥗</div>
+                <h2 class="h4 fw-bold mb-0" style="color: var(--fd-plum);">Food DNA</h2>
+                <small class="text-secondary">Smart Meal Recommendation System</small>
+            </div>
+
+            <div class="mb-4">
+                <h2 class="h3 fw-bold mb-1" style="color: var(--fd-plum-dark);">Welcome Back</h2>
+                <p class="text-secondary small mb-0">Select your role to access your portal.</p>
+            </div>
+
+            <!-- Role Selector Tabs -->
+            <label class="form-label mb-2">Select Your Role</label>
+            <div class="fd-role-selector mb-3" id="roleSelector">
+                <div class="fd-role-tab active" data-role="customer">
+                    <span class="role-icon">👤</span>
+                    <span class="role-title">Customer</span>
+                </div>
+                <div class="fd-role-tab" data-role="restaurant_admin">
+                    <span class="role-icon">🏪</span>
+                    <span class="role-title">Restaurant</span>
+                </div>
+                <div class="fd-role-tab" data-role="staff">
+                    <span class="role-icon">👨‍🍳</span>
+                    <span class="role-title">Staff</span>
+                </div>
+                <div class="fd-role-tab" data-role="delivery_partner">
+                    <span class="role-icon">🛵</span>
+                    <span class="role-title">Delivery</span>
+                </div>
+                <div class="fd-role-tab" data-role="super_admin">
+                    <span class="role-icon">⚡</span>
+                    <span class="role-title">Admin</span>
+                </div>
+            </div>
+
+            <div id="message"></div>
+
+            <form id="loginForm" novalidate>
+                <input type="hidden" id="role" name="role" value="customer">
+
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email / Gmail ID</label>
+                    <input type="email" class="form-control" id="email" name="email" required autocomplete="username" placeholder="you@gmail.com">
+                </div>
+
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <label for="password" class="form-label mb-0">Password</label>
+                        <a href="forgot-password.html" class="small text-secondary" style="font-size: 0.8rem;">Forgot?</a>
+                    </div>
+                    <div class="position-relative mt-1">
+                        <input type="password" class="form-control pe-5" id="password" name="password" required autocomplete="current-password" placeholder="••••••••">
+                        <button type="button" class="btn btn-link position-absolute end-0 top-50 translate-middle-y text-secondary text-decoration-none pe-3" id="togglePasswordBtn" style="font-size: 0.85rem;">
+                            Show
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-check mb-4">
+                    <input class="form-check-input" type="checkbox" id="remember">
+                    <label class="form-check-label small text-secondary" for="remember">Keep me signed in on this device</label>
+                </div>
+
+                <button type="submit" id="submitButton" class="btn btn-fd w-100 py-2 mb-3">
+                    Log in
+                </button>
+            </form>
+
+            <div class="text-center pt-2 border-top" style="border-color: var(--fd-border-light) !important;">
+                <p class="small text-secondary mb-2">
+                    Don't have an account? <a href="register.html" class="fw-bold" style="color: var(--fd-plum);">Create Account</a>
+                </p>
+                <div class="small">
+                    <a href="application-status.html" class="text-secondary">Check restaurant application status</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="js/api.js"></script>
+<script>
+(async function () {
+    const user = await getCurrentUser();
+    if (user) {
+        redirectToDashboard(user.role);
+    }
+})();
+
+function redirectToDashboard(role) {
+    if (role === "restaurant_admin") window.location.href = "restaurant-management.html";
+    else if (role === "staff") window.location.href = "staff-dashboard.html";
+    else if (role === "delivery_partner") window.location.href = "delivery-dashboard.html";
+    else if (role === "super_admin") window.location.href = "admin-dashboard.html";
+    else window.location.href = "dashboard.html";
+}
+
+// Role tabs switcher
+const tabs = document.querySelectorAll(".fd-role-tab");
+const roleInput = document.getElementById("role");
+tabs.forEach(tab => {
+    tab.addEventListener("click", () => {
+        tabs.forEach(t => t.classList.remove("active"));
+        tab.classList.add("active");
+        roleInput.value = tab.dataset.role;
+    });
+});
+
+// Toggle password visibility
+const toggleBtn = document.getElementById("togglePasswordBtn");
+const passwordInput = document.getElementById("password");
+toggleBtn.addEventListener("click", () => {
+    if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        toggleBtn.textContent = "Hide";
+    } else {
+        passwordInput.type = "password";
+        toggleBtn.textContent = "Show";
+    }
+});
+
+// Submit login
+document.getElementById("loginForm").addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const message = document.getElementById("message");
+    const button = document.getElementById("submitButton");
+    clearMessage(message);
+
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+    const role = document.getElementById("role").value;
+
+    if (!email || !password) {
+        showMessage(message, "danger", "Please enter your email and password.");
+        return;
+    }
+
+    setBusy(button, true, "Signing in...");
+    const result = await apiRequest("/api/auth/login", {
+        method: "POST",
+        body: {
+            email,
+            password,
+            role,
+            remember_me: document.getElementById("remember").checked
+        }
+    });
+    setBusy(button, false);
+
+    if (!result.ok) {
+        let text = result.data.error || "Login failed.";
+        if (result.data.code === "ACCOUNT_PENDING" || result.data.code === "ACCOUNT_REJECTED") {
+            text += " You can check your application on the status page.";
+        }
+        showMessage(message, "danger", text);
+        return;
+    }
+
+    redirectToDashboard(result.data.user.role);
+});
+</script>
+</body>
+</html>
