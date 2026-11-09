@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Food DNA</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="fd-app-layout">
+    <div id="sidebar"></div>
+
+    <div class="fd-main-wrapper">
+        <div id="topbar"></div>
+
+        <main class="fd-main-content">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+                <div>
+                    <h1 class="h2 fw-bold mb-1" style="color: var(--fd-plum-dark);">Checkout</h1>
+                    <p class="text-secondary mb-0">Confirm your delivery destination and finalize your order.</p>
+                </div>
+                <a href="cart.html" class="btn btn-fd-outline btn-sm">
+                    &larr; Back to Cart
+                </a>
+            </div>
+
+            <!-- Stepper Progress Bar (Screens 7 & 8) -->
+            <div class="fd-stepper max-w-700 mx-auto" style="max-width: 650px;">
+                <div class="fd-step active" id="step1">
+                    <div class="fd-step-circle">1</div>
+                    <span class="fd-step-label">Delivery Address</span>
+                </div>
+                <div class="fd-step active" id="step2">
+                    <div class="fd-step-circle">2</div>
+                    <span class="fd-step-label">Payment Method</span>
+                </div>
+                <div class="fd-step active" id="step3">
+                    <div class="fd-step-circle">3</div>
+                    <span class="fd-step-label">Order Review</span>
+                </div>
+            </div>
+
+            <div id="checkoutMessage" aria-live="polite"></div>
+            <div id="checkoutContent" aria-live="polite">
+                <div class="text-center py-5 text-secondary">
+                    <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                    Loading checkout...
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/layout.js"></script>
+<script src="js/checkout.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        initCheckoutPage();
+    });
+</script>
+</body>
+</html>
