@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Notifications - Food DNA</title>
+    <meta name="description" content="View your order progress and account notifications on Food DNA.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body class="fd-app-body">
+    <div class="fd-app-layout">
+        <!-- Dual-zone sidebar -->
+        <div id="sidebar"></div>
+
+        <div class="fd-content-wrapper">
+            <!-- Topbar -->
+            <div id="topbar"></div>
+
+            <main class="fd-main-content" id="mainContent">
+                <!-- Page Header -->
+                <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+                    <div>
+                        <h1 class="fd-page-title mb-1">Notifications & Activity</h1>
+                        <p class="text-secondary mb-0">Stay informed on real-time order status, cooking progress, and delivery arrivals.</p>
+                    </div>
+                    <div>
+                        <button id="readAll" class="btn btn-fd-outline btn-sm">Mark All as Read</button>
+                    </div>
+                </div>
+
+                <div id="pageMessage"></div>
+
+                <!-- Notifications Card & List -->
+                <div class="fd-card p-4">
+                    <div id="notificationList" class="d-flex flex-column gap-3">
+                        <div class="p-4 text-center text-secondary small">Loading your notifications...</div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/layout.js"></script>
+    <script src="js/engagement.js"></script>
+</body>
+</html>
