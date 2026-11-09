@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>User & Operator Management - Food DNA</title>
+    <meta name="description" content="Manage user roles, provision staff/riders, and toggle account suspensions on Food DNA.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body class="fd-app-body">
+    <div class="fd-app-layout">
+        <!-- Dual-zone sidebar -->
+        <div id="sidebar"></div>
+
+        <div class="fd-content-wrapper">
+            <!-- Topbar -->
+            <div id="topbar"></div>
+
+            <main class="fd-main-content" id="mainContent">
+                <!-- Page Header -->
+                <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+                    <div>
+                        <h1 class="fd-page-title mb-1">User & Role Management</h1>
+                        <p class="text-secondary mb-0">Control access levels, account statuses, and provision operational staff.</p>
+                    </div>
+                    <div>
+                        <a href="#createOperatorSection" class="btn btn-fd btn-sm">+ Provision Operator</a>
+                    </div>
+                </div>
+
+                <div id="pageMessage"></div>
+
+                <!-- Users Directory Card -->
+                <div class="fd-card p-4 mb-4">
+                    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+                        <h2 class="h5 fw-bold mb-0">Platform Accounts</h2>
+                        <div class="d-flex align-items-center gap-2">
+                            <label for="roleFilter" class="small fw-semibold text-secondary">Filter Role:</label>
+                            <select id="roleFilter" class="form-select form-select-sm" style="width: auto;">
+                                <option value="" selected>All Roles</option>
+                                <option value="customer">Customer</option>
+                                <option value="restaurant_admin">Restaurant Admin</option>
+                                <option value="staff">Kitchen Staff</option>
+                                <option value="delivery_partner">Delivery Partner</option>
+                                <option value="super_admin">Super Admin</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle fd-table mb-0">
+                            <thead>
+                                <tr>
+                                    <th>User</th>
+                                    <th>Role</th>
+                                    <th>Status</th>
+                                    <th>Approval</th>
+                                    <th class="text-end">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="userTableBody">
+                                <tr>
+                                    <td colspan="5" class="p-4 text-center text-secondary small">Loading platform users...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Provision Operator Section -->
+                <div class="fd-card p-4" id="createOperatorSection">
+                    <h2 class="h5 fw-bold mb-2">Provision Staff or Delivery Partner Account</h2>
+                    <p class="text-secondary small mb-4">Create operational accounts directly. Full names must be Unicode letters/spaces only, and email must end with @gmail.com.</p>
+
+                    <form id="createOperatorForm" class="row g-3">
+                        <div class="col-md-4">
+                            <label class="form-label small fw-semibold" for="operatorRole">Account Role *</label>
+                            <select id="operatorRole" class="form-select" required>
+                                <option value="staff" selected>Kitchen Staff</option>
+                                <option value="delivery_partner">Delivery Partner</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label small fw-semibold" for="operatorName">Full Name *</label>
+                            <input id="operatorName" class="form-control" placeholder="Letters and spaces only" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label small fw-semibold" for="operatorEmail">Email Address (@gmail.com) *</label>
+                            <input id="operatorEmail" type="email" class="form-control" placeholder="operator@gmail.com" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label small fw-semibold" for="operatorPassword">Initial Password * (≥10 chars)</label>
+                            <input id="operatorPassword" type="password" minlength="10" class="form-control" placeholder="Min. 10 characters" required>
+                        </div>
+
+                        <!-- Staff-only fields -->
+                        <div id="staffFields" class="row g-3 col-md-8">
+                            <div class="col-md-6">
+                                <label class="form-label small fw-semibold" for="operatorRestaurant">Assigned Restaurant *</label>
+                                <select id="operatorRestaurant" class="form-select">
+                                    <option value="" disabled selected>Loading restaurants...</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-semibold" for="operatorDesignation">Designation</label>
+                                <input id="operatorDesignation" class="form-control" placeholder="e.g. Head Chef, Prep Cook">
+                            </div>
+                        </div>
+
+                        <!-- Delivery-only fields -->
+                        <div id="deliveryFields" class="col-md-8" hidden>
+                            <label class="form-label small fw-semibold" for="operatorPhone">Phone Number</label>
+                            <input id="operatorPhone" type="tel" class="form-control" placeholder="+91 9876543210">
+                        </div>
+
+                        <div class="col-12 mt-4">
+                            <button class="btn btn-fd px-4" type="submit">Create Operator Account</button>
+                        </div>
+                    </form>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/layout.js"></script>
+    <script src="js/admin-users.js"></script>
+</body>
+</html>
