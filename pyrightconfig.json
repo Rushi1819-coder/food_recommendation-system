@@ -1,0 +1,9 @@
+{
+  "extraPaths": [
+    "fooddna18_UI_REDESIGN_STARTER/fooddna18/backend",
+    "fooddna18_UI_REDESIGN_STARTER/fooddna18",
+    "backend",
+    "."
+  ],
+  "reportCallIssue": "none"
+}
