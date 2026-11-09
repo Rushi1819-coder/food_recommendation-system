@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Menu - Food DNA</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="fd-app-layout">
+    <div id="sidebar"></div>
+
+    <div class="fd-main-wrapper">
+        <div id="topbar"></div>
+
+        <main class="fd-main-content">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
+                <div>
+                    <h1 class="h2 fw-bold mb-1" style="color: var(--fd-plum-dark);">Our Food Menu</h1>
+                    <div class="text-secondary small" id="mealSummary" aria-live="polite">Loading available dishes...</div>
+                </div>
+                <div>
+                    <a href="reverse-ordering.html" class="btn btn-fd-blush btn-sm">
+                        <span>✨</span> Reverse Food Ordering
+                    </a>
+                </div>
+            </div>
+
+            <!-- Category Pills Bar (Matches Screen 4) -->
+            <div class="fd-category-scroll" id="categoryPills">
+                <button type="button" class="fd-category-pill active" data-cat="">All</button>
+                <button type="button" class="fd-category-pill" data-foodtype="Vegetarian">Vegetarian</button>
+                <button type="button" class="fd-category-pill" data-foodtype="Non-Veg">Non-Veg</button>
+                <button type="button" class="fd-category-pill" data-foodtype="Vegan">Vegan</button>
+                <button type="button" class="fd-category-pill" data-cuisine="Indian">Indian</button>
+                <button type="button" class="fd-category-pill" data-cuisine="Italian">Italian</button>
+                <button type="button" class="fd-category-pill" data-cuisine="Chinese">Chinese</button>
+            </div>
+
+            <!-- Filter Panel -->
+            <form id="filterForm" class="fd-card p-3 p-md-4 mb-4" novalidate>
+                <div class="row g-2 g-md-3 align-items-end">
+                    <div class="col-12 col-md-4 col-lg-3">
+                        <label class="form-label small mb-1" for="fSearch">Search keyword</label>
+                        <input id="fSearch" name="q" type="search" maxlength="100" class="form-control" placeholder="e.g. paneer, biryani, salad">
+                    </div>
+                    <div class="col-6 col-md-4 col-lg-2">
+                        <label class="form-label small mb-1" for="fRestaurant">Restaurant</label>
+                        <select id="fRestaurant" name="restaurant_id" class="form-select"><option value="">All kitchens</option></select>
+                    </div>
+                    <div class="col-6 col-md-4 col-lg-2">
+                        <label class="form-label small mb-1" for="fCategory">Category</label>
+                        <select id="fCategory" name="category_id" class="form-select"><option value="">All</option></select>
+                    </div>
+                    <div class="col-6 col-md-3 col-lg-2">
+                        <label class="form-label small mb-1" for="fCuisine">Cuisine</label>
+                        <select id="fCuisine" name="cuisine" class="form-select"><option value="">All</option></select>
+                    </div>
+                    <div class="col-6 col-md-3 col-lg-1">
+                        <label class="form-label small mb-1" for="fSpice">Spice</label>
+                        <select id="fSpice" name="spice_level" class="form-select"><option value="">All</option></select>
+                    </div>
+                    <div class="col-6 col-md-3 col-lg-1">
+                        <label class="form-label small mb-1" for="fMax">Max ₹</label>
+                        <input id="fMax" name="max_price" type="text" inputmode="decimal" class="form-control" placeholder="Any">
+                    </div>
+                    <div class="col-6 col-md-3 col-lg-1 d-none">
+                        <select id="fMealType" name="meal_type" class="form-select"><option value="">All</option></select>
+                        <select id="fFoodType" name="food_type" class="form-select"><option value="">All</option></select>
+                        <select id="fDietary" name="dietary_preference" class="form-select"><option value="">All</option></select>
+                        <input id="fMin" name="min_price" type="text" class="form-control" placeholder="0">
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-2 d-flex gap-2">
+                        <button class="btn btn-fd flex-grow-1" type="submit">Filter</button>
+                        <button class="btn btn-outline-secondary" type="button" id="resetFilters">Reset</button>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-2">
+                        <select id="fSort" name="sort" class="form-select">
+                            <option value="">Sort: Name (A-Z)</option>
+                            <option value="price_asc">Price: Low to High</option>
+                            <option value="price_desc">Price: High to Low</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="filterMessage" class="mt-2"></div>
+            </form>
+
+            <!-- Results Grid -->
+            <div id="mealResults" aria-live="polite"></div>
+            <div id="mealPager" class="mt-4"></div>
+        </main>
+    </div>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/layout.js"></script>
+<script src="js/browse.js"></script>
+<script>
+initMealBrowser({});
+
+// Category Pills interaction
+document.querySelectorAll(".fd-category-pill").forEach(pill => {
+    pill.addEventListener("click", () => {
+        document.querySelectorAll(".fd-category-pill").forEach(p => p.classList.remove("active"));
+        pill.classList.add("active");
+
+        const foodType = pill.dataset.foodtype;
+        const cuisine = pill.dataset.cuisine;
+
+        const ftSelect = document.getElementById("fFoodType");
+        const cuSelect = document.getElementById("fCuisine");
+
+        if (ftSelect) ftSelect.value = foodType || "";
+        if (cuSelect) cuSelect.value = cuisine || "";
+
+        document.getElementById("filterForm").dispatchEvent(new Event("submit"));
+    });
+});
+</script>
+</body>
+</html>
