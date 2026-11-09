@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account - Food DNA</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body style="background: var(--fd-cream);">
+
+<div class="fd-auth-wrapper">
+    <!-- Left Hero Side -->
+    <div class="fd-auth-hero d-none d-lg-flex" style="background: linear-gradient(135deg, #2D0915 0%, #4A1525 100%);">
+        <div>
+            <div class="d-flex align-items-center gap-2 mb-4">
+                <div class="fd-brand-icon bg-white text-dark" style="color: var(--fd-plum) !important;">🥗</div>
+                <span class="fd-brand-text text-white">Food DNA</span>
+            </div>
+            <h1 class="display-5 fw-bold text-white mb-3" style="line-height: 1.2;">
+                Your Food.<br>
+                Your Taste.<br>
+                <span style="color: var(--fd-rose-light);">Your DNA.</span>
+            </h1>
+            <p class="text-white-50" style="max-width: 420px; font-size: 1.05rem;">
+                Set up your personal flavor profile and unlock tailored meal suggestions from the finest kitchens.
+            </p>
+        </div>
+
+        <div class="text-center my-4">
+            <div style="width: 320px; height: 320px; border-radius: 50%; overflow: hidden; margin: 0 auto; box-shadow: 0 16px 40px rgba(0,0,0,0.35); border: 6px solid rgba(255,255,255,0.15);">
+                <img src="img/paneer_tikka.jpg" alt="Paneer Tikka Meal Bowl" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center text-white-50 small border-top pt-3 border-secondary">
+            <span>© Food DNA System</span>
+            <a href="login.html" class="text-white text-decoration-none">Already registered? Log in →</a>
+        </div>
+    </div>
+
+    <!-- Right Form Side -->
+    <div class="fd-auth-form-side">
+        <div class="fd-auth-form-card">
+            <div class="mb-4">
+                <div class="d-flex align-items-center gap-2 mb-2">
+                    <div class="fd-brand-icon" style="width: 32px; height: 32px; font-size: 0.9rem;">🥗</div>
+                    <span class="fw-bold" style="color: var(--fd-plum);">Food DNA</span>
+                </div>
+                <h2 class="h3 fw-bold mb-1" style="color: var(--fd-plum-dark);">Create Your Account</h2>
+                <p class="text-secondary small mb-0">Join us for a personalized food experience.</p>
+            </div>
+
+            <div id="message"></div>
+
+            <form id="registerForm" novalidate>
+                <div class="mb-3">
+                    <label for="fullName" class="form-label">Full Name</label>
+                    <input type="text" class="form-control" id="fullName" name="full_name" required autocomplete="name" placeholder="Rushi Sharma">
+                    <div class="form-text text-secondary" style="font-size: 0.75rem;">Letters and ordinary spaces only (no numbers or symbols).</div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email / Gmail ID</label>
+                    <input type="email" class="form-control" id="email" name="email" required autocomplete="username" placeholder="you@gmail.com">
+                    <div class="form-text text-secondary" style="font-size: 0.75rem;">Must be a valid @gmail.com address.</div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" required autocomplete="new-password" placeholder="At least 8 chars, 1 uppercase, 1 digit, 1 special">
+                </div>
+
+                <div class="mb-4">
+                    <label for="confirmPassword" class="form-label">Confirm Password</label>
+                    <input type="password" class="form-control" id="confirmPassword" name="confirm_password" required autocomplete="new-password" placeholder="Re-enter password">
+                </div>
+
+                <button type="submit" id="submitButton" class="btn btn-fd w-100 py-2 mb-3">
+                    Register
+                </button>
+            </form>
+
+            <div class="text-center pt-2 border-top" style="border-color: var(--fd-border-light) !important;">
+                <p class="small text-secondary mb-0">
+                    Already have an account? <a href="login.html" class="fw-bold" style="color: var(--fd-plum);">Login</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="js/api.js"></script>
+<script>
+(async function () {
+    if (await getCurrentUser()) {
+        window.location.href = "dashboard.html";
+    }
+})();
+
+// Real-time name character filter: strip numbers and punctuation as user types/pastes
+const nameInput = document.getElementById("fullName");
+nameInput.addEventListener("input", () => {
+    // Retain Unicode letters and ordinary spaces only
+    nameInput.value = nameInput.value.replace(/[^\p{L}\s]/gu, "");
+});
+
+document.getElementById("registerForm").addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const message = document.getElementById("message");
+    const button = document.getElementById("submitButton");
+    clearMessage(message);
+
+    const full_name = nameInput.value.trim();
+    const email = document.getElementById("email").value.trim().toLowerCase();
+    const password = document.getElementById("password").value;
+    const confirm_password = document.getElementById("confirmPassword").value;
+
+    if (!full_name || !email || !password || !confirm_password) {
+        showMessage(message, "danger", "All fields are required.");
+        return;
+    }
+
+    if (!NAME_RULE.test(full_name)) {
+        showMessage(message, "danger", "Full name accepts letters and ordinary spaces only.");
+        return;
+    }
+
+    if (!EMAIL_RULE.test(email)) {
+        showMessage(message, "danger", "Please enter a valid email address ending in @gmail.com.");
+        return;
+    }
+
+    if (password !== confirm_password) {
+        showMessage(message, "danger", "Passwords do not match.");
+        return;
+    }
+
+    if (!PASSWORD_RULE.test(password)) {
+        showMessage(message, "danger", PASSWORD_HINT);
+        return;
+    }
+
+    setBusy(button, true, "Creating Account...");
+    const result = await apiRequest("/api/auth/register", {
+        method: "POST",
+        body: { full_name, email, password, confirm_password }
+    });
+    setBusy(button, false);
+
+    if (!result.ok) {
+        showMessage(message, "danger", result.data.error || "Registration failed.");
+        return;
+    }
+
+    showMessage(message, "success", "Account created successfully! Logging you in...");
+    // Auto-login after registration
+    const loginRes = await apiRequest("/api/auth/login", {
+        method: "POST",
+        body: { email, password, role: "customer" }
+    });
+
+    if (loginRes.ok) {
+        window.location.href = "dashboard.html";
+    } else {
+        setTimeout(() => { window.location.href = "login.html"; }, 1500);
+    }
+});
+</script>
+</body>
+</html>
