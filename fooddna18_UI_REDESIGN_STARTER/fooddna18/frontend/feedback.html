@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ratings & Reviews - Food DNA</title>
+    <meta name="description" content="Rate your meals and share your dining feedback on Food DNA.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body class="fd-app-body">
+    <div class="fd-app-layout">
+        <!-- Dual-zone sidebar -->
+        <div id="sidebar"></div>
+
+        <div class="fd-content-wrapper">
+            <!-- Topbar -->
+            <div id="topbar"></div>
+
+            <main class="fd-main-content" id="mainContent">
+                <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-2">
+                    <div>
+                        <h1 class="fd-page-title mb-1">Ratings & Reviews</h1>
+                        <p class="text-secondary mb-0">Help restaurants optimize your food DNA by sharing meal feedback.</p>
+                    </div>
+                </div>
+
+                <div id="pageMessage"></div>
+
+                <!-- Rating summary and submission row -->
+                <div class="row g-4 mb-4">
+                    <!-- Rating Form -->
+                    <div class="col-lg-7">
+                        <div class="fd-card p-4 h-100">
+                            <h2 class="h5 fw-bold mb-3 d-flex align-items-center gap-2">
+                                <span style="color: var(--fd-primary);">★</span> Rate a Delivered Meal
+                            </h2>
+                            <p class="text-secondary small mb-3">
+                                Feedback is recorded in your taste profile after an order has been delivered. Provide the Order ID and Meal ID from your order receipt.
+                            </p>
+                            <form id="feedbackForm" class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-semibold" for="feedbackOrderId">Order ID</label>
+                                    <input id="feedbackOrderId" type="number" min="1" class="form-control" placeholder="e.g. 101" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-semibold" for="feedbackMealId">Meal ID</label>
+                                    <input id="feedbackMealId" type="number" min="1" class="form-control" placeholder="e.g. 1" required>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label small fw-semibold" for="feedbackRating">Star Rating</label>
+                                    <select id="feedbackRating" class="form-select" required>
+                                        <option value="5" selected>★★★★★ - 5 Stars (Exceptional taste)</option>
+                                        <option value="4">★★★★☆ - 4 Stars (Very good)</option>
+                                        <option value="3">★★★☆☆ - 3 Stars (Satisfactory)</option>
+                                        <option value="2">★★☆☆☆ - 2 Stars (Needs improvement)</option>
+                                        <option value="1">★☆☆☆☆ - 1 Star (Disappointing)</option>
+                                    </select>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label small fw-semibold" for="feedbackComment">Flavor & Experience Review (optional)</label>
+                                    <textarea id="feedbackComment" class="form-control" rows="3" maxlength="2000" placeholder="Tell us about the spice, texture, freshness, and portion size..."></textarea>
+                                </div>
+                                <div class="col-12">
+                                    <button class="btn btn-fd px-4" type="submit" id="submitFeedbackBtn">Submit Review</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Summary & Stats Banner -->
+                    <div class="col-lg-5">
+                        <div class="fd-card p-4 h-100" style="background: linear-gradient(145deg, #FFF, #FCEEF2);">
+                            <h2 class="h5 fw-bold mb-3">Community Score</h2>
+                            <div class="d-flex align-items-center gap-3 mb-3">
+                                <div class="display-4 fw-bold" style="color: var(--fd-primary);">4.8</div>
+                                <div>
+                                    <div class="text-warning fs-5">★★★★★</div>
+                                    <div class="text-secondary small">Based on verified meal ratings</div>
+                                </div>
+                            </div>
+                            <div class="d-flex flex-column gap-2 mb-3">
+                                <div>
+                                    <div class="d-flex justify-content-between small text-secondary mb-1">
+                                        <span>5 Stars (Taste & Spice)</span>
+                                        <span>88%</span>
+                                    </div>
+                                    <div class="progress" style="height: 6px;">
+                                        <div class="progress-bar bg-success" style="width: 88%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="d-flex justify-content-between small text-secondary mb-1">
+                                        <span>4 Stars (Portion & Temp)</span>
+                                        <span>10%</span>
+                                    </div>
+                                    <div class="progress" style="height: 6px;">
+                                        <div class="progress-bar bg-primary" style="width: 10%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="d-flex justify-content-between small text-secondary mb-1">
+                                        <span>3 Stars or lower</span>
+                                        <span>2%</span>
+                                    </div>
+                                    <div class="progress" style="height: 6px;">
+                                        <div class="progress-bar bg-warning" style="width: 2%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="alert alert-light border small text-secondary mb-0">
+                                💡 <strong>Tip:</strong> Rating meals sharpens your personalized Food DNA recommendations and reverse ordering accuracy.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- My Feedback List -->
+                <div class="fd-card p-4">
+                    <h2 class="h5 fw-bold mb-3">My Past Reviews</h2>
+                    <div id="feedbackList" class="d-flex flex-column gap-3">
+                        <div class="text-secondary small">Loading your meal reviews...</div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/layout.js"></script>
+    <script src="js/engagement.js"></script>
+</body>
+</html>
