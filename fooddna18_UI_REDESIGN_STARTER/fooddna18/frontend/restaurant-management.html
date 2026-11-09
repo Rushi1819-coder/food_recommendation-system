@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Restaurant Portal - Food DNA</title>
+    <meta name="description" content="Manage restaurant orders, dishes, and kitchen operations on Food DNA.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body class="fd-app-body">
+    <div class="fd-app-layout">
+        <!-- Dual-zone sidebar -->
+        <div id="sidebar"></div>
+
+        <div class="fd-content-wrapper">
+            <!-- Topbar -->
+            <div id="topbar"></div>
+
+            <main class="fd-main-content" id="mainContent">
+                <!-- Page Header with Restaurant Details -->
+                <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+                    <div>
+                        <div class="d-flex align-items-center gap-2 mb-1">
+                            <h1 class="fd-page-title mb-0" id="restaurantName">Restaurant Management</h1>
+                            <span id="restaurantStatus" class="fd-badge fd-badge-success">APPROVED</span>
+                        </div>
+                        <p class="text-secondary mb-0">Monitor live incoming orders and configure your food catalog.</p>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <a href="offers.html" class="btn btn-fd-outline btn-sm">Manage Offers</a>
+                        <a href="#addDishSection" class="btn btn-fd btn-sm">+ Add New Dish</a>
+                    </div>
+                </div>
+
+                <div id="pageMessage"></div>
+
+                <!-- KPI Metric Cards (Collage Screen 16) -->
+                <div class="row g-3 mb-4">
+                    <div class="col-sm-6 col-xl-4">
+                        <div class="fd-card p-4">
+                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                <span class="text-secondary small fw-semibold text-uppercase tracking-wider">Active Orders</span>
+                                <span class="fd-badge fd-badge-warning">Live</span>
+                            </div>
+                            <div class="display-6 fw-bold" id="kpiActiveOrders" style="color: var(--fd-primary);">0</div>
+                            <div class="small text-secondary mt-1">Orders in preparation or pending</div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-xl-4">
+                        <div class="fd-card p-4">
+                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                <span class="text-secondary small fw-semibold text-uppercase tracking-wider">Total Orders</span>
+                                <span class="fd-badge fd-badge-neutral">All Time</span>
+                            </div>
+                            <div class="display-6 fw-bold" id="kpiTotalOrders">0</div>
+                            <div class="small text-secondary mt-1">Total completed & active customer orders</div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-xl-4">
+                        <div class="fd-card p-4">
+                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                <span class="text-secondary small fw-semibold text-uppercase tracking-wider">Dishes on Menu</span>
+                                <span class="fd-badge fd-badge-success">Catalog</span>
+                            </div>
+                            <div class="display-6 fw-bold" id="kpiTotalMeals">0</div>
+                            <div class="small text-secondary mt-1">Dishes configured in your food catalog</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Live Orders Section -->
+                <div class="fd-card p-4 mb-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h2 class="h5 fw-bold mb-0">Incoming & Active Orders</h2>
+                        <span class="small text-secondary">Auto-refreshes on status change</span>
+                    </div>
+                    <div id="ordersList">
+                        <div class="p-3 text-center text-secondary small">Loading orders queue...</div>
+                    </div>
+                </div>
+
+                <!-- Dishes Menu Management (Collage Screen 17) -->
+                <div class="fd-card p-4 mb-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h2 class="h5 fw-bold mb-0">Menu Catalog</h2>
+                        <span class="small text-secondary">Toggle availability when ingredients run out</span>
+                    </div>
+                    <div id="mealList" class="table-responsive">
+                        <div class="p-3 text-center text-secondary small">Loading menu catalog...</div>
+                    </div>
+                </div>
+
+                <!-- Add Dish Section -->
+                <div class="fd-card p-4" id="addDishSection">
+                    <h2 class="h5 fw-bold mb-2">Add a New Dish</h2>
+                    <p class="text-secondary small mb-4">Dishes with rich taste and spice parameters match better with personalized Food DNA recommendations.</p>
+                    
+                    <form id="mealForm" class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label small fw-semibold" for="mealName">Dish Name *</label>
+                            <input id="mealName" class="form-control" maxlength="150" placeholder="e.g. Royal Paneer Tikka Bowl" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label small fw-semibold" for="mealPrice">Price (₹) *</label>
+                            <input id="mealPrice" type="number" min="0" step="0.01" class="form-control" placeholder="320.00" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label small fw-semibold" for="mealCategory">Food Category *</label>
+                            <select id="mealCategory" class="form-select" required>
+                                <option value="" disabled selected>Select Category</option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label small fw-semibold" for="mealDescription">Description</label>
+                            <textarea id="mealDescription" class="form-control" rows="2" placeholder="Describe the flavors, preparation method, and ingredients..."></textarea>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label small fw-semibold" for="mealCuisine">Cuisine *</label>
+                            <input id="mealCuisine" class="form-control" required maxlength="80" value="Indian">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label small fw-semibold" for="mealType">Meal Type *</label>
+                            <input id="mealType" class="form-control" required maxlength="50" value="Main Course">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label small fw-semibold" for="mealTaste">Taste Profile *</label>
+                            <input id="mealTaste" class="form-control" required maxlength="50" value="Savory">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label small fw-semibold" for="mealSpice">Spice Level</label>
+                            <select id="mealSpice" class="form-select">
+                                <option>Mild</option>
+                                <option selected>Medium</option>
+                                <option>Hot</option>
+                                <option>Very Hot</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label small fw-semibold" for="mealPortion">Portion Size</label>
+                            <select id="mealPortion" class="form-select">
+                                <option>Small</option>
+                                <option selected>Regular</option>
+                                <option>Large</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label small fw-semibold" for="mealFoodType">Food Type</label>
+                            <select id="mealFoodType" class="form-select">
+                                <option value="Veg" selected>Veg</option>
+                                <option value="Vegan">Vegan</option>
+                                <option value="Non-Veg">Non-Veg</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-semibold" for="mealDietary">Dietary Tag (optional)</label>
+                            <input id="mealDietary" class="form-control" maxlength="80" placeholder="e.g. Gluten-Free, High-Protein, Keto">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-semibold" for="mealImage">Image Asset / URL (optional)</label>
+                            <input id="mealImage" type="text" class="form-control" maxlength="500" placeholder="e.g. img/paneer_tikka.jpg">
+                        </div>
+                        <div class="col-12 mt-4">
+                            <button class="btn btn-fd px-4" type="submit" id="addDishSubmitBtn">Add Dish to Menu</button>
+                        </div>
+                    </form>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/layout.js"></script>
+    <script src="js/restaurant-management.js"></script>
+</body>
+</html>
