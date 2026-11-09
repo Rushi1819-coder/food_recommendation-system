@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - Food DNA</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="fd-app-layout">
+    <div id="sidebar"></div>
+
+    <div class="fd-main-wrapper">
+        <div id="topbar"></div>
+
+        <main class="fd-main-content">
+            <!-- Profile Hero (Matches Screen 15) -->
+            <div class="fd-card p-4 mb-4" style="background: linear-gradient(135deg, #FFF9FA 0%, #FFFFFF 100%);">
+                <div class="d-flex align-items-center gap-4 flex-wrap">
+                    <div class="fd-avatar" id="profileAvatar" style="width: 80px; height: 80px; font-size: 2rem; border-width: 2px;">
+                        U
+                    </div>
+                    <div>
+                        <h1 class="h3 fw-bold mb-1" id="profileFullName" style="color: var(--fd-plum-dark);">Loading...</h1>
+                        <div class="text-secondary small mb-2" id="profileEmail">user@gmail.com</div>
+                        <div class="d-flex gap-2">
+                            <span class="fd-badge fd-badge-active" id="profileRole">Customer</span>
+                            <span class="fd-badge fd-badge-preparing" id="profileStatus">Active</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="profileMessage" aria-live="polite"></div>
+
+            <div class="row g-4">
+                <!-- Personal Details Form -->
+                <div class="col-lg-6">
+                    <div class="fd-card p-4 h-100">
+                        <h2 class="h5 fw-bold mb-3" style="color: var(--fd-plum-dark);">Personal Information</h2>
+                        <form id="editProfileForm" novalidate>
+                            <div class="mb-3">
+                                <label for="inputName" class="form-label">Full Name</label>
+                                <input type="text" class="form-control" id="inputName" required maxlength="120">
+                                <div class="form-text">Unicode letters and spaces only.</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="inputEmail" class="form-label">Email Address</label>
+                                <input type="email" class="form-control bg-light" id="inputEmail" disabled>
+                                <div class="form-text">Registered Gmail address.</div>
+                            </div>
+                            <button type="submit" id="saveProfileBtn" class="btn btn-fd btn-sm px-4">
+                                Save Profile Changes
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Password Update Form -->
+                <div class="col-lg-6">
+                    <div class="fd-card p-4 h-100">
+                        <h2 class="h5 fw-bold mb-3" style="color: var(--fd-plum-dark);">Change Password</h2>
+                        <form id="changePasswordForm" novalidate>
+                            <div class="mb-3">
+                                <label for="currentPassword" class="form-label">Current Password</label>
+                                <input type="password" class="form-control" id="currentPassword" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="newPassword" class="form-label">New Password</label>
+                                <input type="password" class="form-control" id="newPassword" required>
+                                <div class="form-text">At least 8 chars, 1 uppercase, 1 lowercase, 1 number, 1 symbol.</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="confirmNewPassword" class="form-label">Confirm New Password</label>
+                                <input type="password" class="form-control" id="confirmNewPassword" required>
+                            </div>
+                            <button type="submit" id="changePasswordBtn" class="btn btn-fd-outline btn-sm px-4">
+                                Update Password
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Saved Delivery Addresses (Stage 5) -->
+                <div class="col-12">
+                    <div class="fd-card p-4">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+                            <div>
+                                <h2 class="h5 fw-bold mb-1" style="color: var(--fd-plum-dark);">Saved Delivery Addresses</h2>
+                                <p class="text-secondary small mb-0">Manage addresses for faster one-click checkout.</p>
+                            </div>
+                            <button type="button" class="btn btn-fd btn-sm" id="toggleAddAddressBtn">
+                                + Add New Address
+                            </button>
+                        </div>
+
+                        <!-- Add Address Form (Toggled) -->
+                        <div id="addAddressBox" class="p-3 mb-4 rounded-3 border bg-light" style="display: none;">
+                            <h3 class="h6 fw-bold mb-3">Add Delivery Destination</h3>
+                            <form id="newAddressForm" novalidate>
+                                <div class="row g-3">
+                                    <div class="col-md-4">
+                                        <label for="addrLabel" class="form-label">Label (e.g. Home, Office, Other)</label>
+                                        <input type="text" id="addrLabel" class="form-control" placeholder="Home" maxlength="80">
+                                    </div>
+                                    <div class="col-md-8">
+                                        <label for="addrText" class="form-label">Full Address</label>
+                                        <input type="text" id="addrText" class="form-control" placeholder="House/Flat number, building, street, landmark, city" required>
+                                    </div>
+                                    <div class="col-12 d-flex align-items-center justify-content-between">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="addrDefault">
+                                            <label class="form-check-label small" for="addrDefault">Set as default delivery address</label>
+                                        </div>
+                                        <div class="d-flex gap-2">
+                                            <button type="submit" class="btn btn-fd btn-sm">Save Address</button>
+                                            <button type="button" class="btn btn-outline-secondary btn-sm" id="cancelAddrBtn">Cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Address Cards List -->
+                        <div class="row g-3" id="addressListContainer">
+                            <div class="col-12 text-center py-3 text-secondary">
+                                Loading saved addresses...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/layout.js"></script>
+<script>
+(async function initProfilePage() {
+    const user = await requireLogin();
+    if (!user) return;
+
+    const msg = document.getElementById("profileMessage");
+
+    async function loadProfile() {
+        const res = await fetchUserProfile();
+        if (res.ok) {
+            const p = res.data.profile;
+            document.getElementById("profileFullName").textContent = p.full_name;
+            document.getElementById("profileEmail").textContent = p.email;
+            document.getElementById("profileAvatar").textContent = p.full_name.split(" ").map(w => w[0]).join("").toUpperCase().slice(0, 2);
+            document.getElementById("inputName").value = p.full_name;
+            document.getElementById("inputEmail").value = p.email;
+            document.getElementById("profileRole").textContent = p.role.replace("_", " ");
+            document.getElementById("profileStatus").textContent = p.account_status;
+
+            renderAddresses(p.addresses || []);
+        }
+    }
+
+    function renderAddresses(addresses) {
+        const container = document.getElementById("addressListContainer");
+        if (addresses.length === 0) {
+            container.innerHTML = `
+                <div class="col-12">
+                    <div class="p-4 text-center text-secondary border rounded-3 bg-white">
+                        No delivery addresses saved yet. Click "+ Add New Address" above.
+                    </div>
+                </div>
+            `;
+            return;
+        }
+
+        container.innerHTML = "";
+        addresses.forEach(addr => {
+            const col = document.createElement("div");
+            col.className = "col-md-6";
+            col.innerHTML = `
+                <div class="p-3 rounded-3 border bg-white h-100 d-flex flex-column justify-content-between" style="border-color: ${addr.is_default ? 'var(--fd-plum)' : 'var(--fd-border)'} !important; border-width: ${addr.is_default ? '2px' : '1px'} !important;">
+                    <div>
+                        <div class="d-flex align-items-center justify-content-between mb-2">
+                            <span class="fw-bold" style="color: var(--fd-plum);">${addr.label || 'Address'}</span>
+                            ${addr.is_default ? '<span class="fd-badge fd-badge-active">Default</span>' : ''}
+                        </div>
+                        <p class="small text-secondary mb-3">${addr.full_address}</p>
+                    </div>
+                    <div class="d-flex gap-2 pt-2 border-top">
+                        ${!addr.is_default ? `<button type="button" class="btn btn-outline-secondary btn-sm py-1 px-2 set-def-btn" data-id="${addr.id}" style="font-size:0.75rem;">Set Default</button>` : ''}
+                        <button type="button" class="btn btn-outline-danger btn-sm py-1 px-2 ms-auto del-addr-btn" data-id="${addr.id}" style="font-size:0.75rem;">Delete</button>
+                    </div>
+                </div>
+            `;
+
+            const setDefBtn = col.querySelector(".set-def-btn");
+            if (setDefBtn) {
+                setDefBtn.addEventListener("click", async () => {
+                    await setDefaultAddress(addr.id);
+                    loadProfile();
+                });
+            }
+
+            const delBtn = col.querySelector(".del-addr-btn");
+            if (delBtn) {
+                delBtn.addEventListener("click", async () => {
+                    if (confirm(`Delete saved address "${addr.label}"?`)) {
+                        await deleteUserAddress(addr.id);
+                        loadProfile();
+                    }
+                });
+            }
+
+            container.appendChild(col);
+        });
+    }
+
+    // Toggle add address box
+    const addBox = document.getElementById("addAddressBox");
+    document.getElementById("toggleAddAddressBtn").addEventListener("click", () => {
+        addBox.style.display = addBox.style.display === "none" ? "block" : "none";
+    });
+    document.getElementById("cancelAddrBtn").addEventListener("click", () => {
+        addBox.style.display = "none";
+    });
+
+    // Save new address
+    document.getElementById("newAddressForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const label = document.getElementById("addrLabel").value.trim() || "Home";
+        const full_address = document.getElementById("addrText").value.trim();
+        const is_default = document.getElementById("addrDefault").checked;
+
+        if (!full_address) {
+            alert("Please provide the full delivery address.");
+            return;
+        }
+
+        const res = await addUserAddress({ label, full_address, is_default });
+        if (res.ok) {
+            addBox.style.display = "none";
+            document.getElementById("newAddressForm").reset();
+            loadProfile();
+        } else {
+            alert(res.data.error || "Could not add address.");
+        }
+    });
+
+    // Save Profile Name
+    const nameInput = document.getElementById("inputName");
+    nameInput.addEventListener("input", () => {
+        nameInput.value = nameInput.value.replace(/[^\p{L}\s]/gu, "");
+    });
+
+    document.getElementById("editProfileForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const full_name = nameInput.value.trim();
+        if (!NAME_RULE.test(full_name)) {
+            showMessage(msg, "danger", "Full name accepts letters and ordinary spaces only.");
+            return;
+        }
+
+        const btn = document.getElementById("saveProfileBtn");
+        setBusy(btn, true);
+        const res = await updateUserProfile({ full_name });
+        setBusy(btn, false);
+
+        if (res.ok) {
+            showMessage(msg, "success", "Profile updated successfully!");
+            loadProfile();
+        } else {
+            showMessage(msg, "danger", res.data.error || "Failed to update profile.");
+        }
+    });
+
+    // Change Password
+    document.getElementById("changePasswordForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const current_password = document.getElementById("currentPassword").value;
+        const new_password = document.getElementById("newPassword").value;
+        const confirm_password = document.getElementById("confirmNewPassword").value;
+
+        if (!current_password || !new_password || !confirm_password) {
+            showMessage(msg, "danger", "Please fill in all password fields.");
+            return;
+        }
+
+        if (new_password !== confirm_password) {
+            showMessage(msg, "danger", "New passwords do not match.");
+            return;
+        }
+
+        if (!PASSWORD_RULE.test(new_password)) {
+            showMessage(msg, "danger", PASSWORD_HINT);
+            return;
+        }
+
+        const btn = document.getElementById("changePasswordBtn");
+        setBusy(btn, true);
+        const res = await changeUserPassword({ current_password, new_password, confirm_password });
+        setBusy(btn, false);
+
+        if (res.ok) {
+            showMessage(msg, "success", "Password updated successfully!");
+            document.getElementById("changePasswordForm").reset();
+        } else {
+            showMessage(msg, "danger", res.data.error || "Could not change password.");
+        }
+    });
+
+    loadProfile();
+})();
+</script>
+</body>
+</html>
