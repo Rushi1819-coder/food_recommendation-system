@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food DNA Preferences - Food DNA</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="fd-app-layout">
+    <div id="sidebar"></div>
+
+    <div class="fd-main-wrapper">
+        <div id="topbar"></div>
+
+        <main class="fd-main-content">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
+                <div>
+                    <h1 class="h2 fw-bold mb-1" style="color: var(--fd-plum-dark);">Food DNA Preferences</h1>
+                    <p class="text-secondary mb-0">Update your preferences for better, personalized recommendations.</p>
+                </div>
+                <a href="recommendations.html" class="btn btn-fd-blush btn-sm">
+                    View My Recommendations &rarr;
+                </a>
+            </div>
+
+            <div id="pageMessage" aria-live="polite"></div>
+
+            <!-- Quick Choice Chips (Screen 14 Visual Cue) -->
+            <div class="fd-card p-4 mb-4">
+                <h3 class="h6 fw-bold mb-3" style="color: var(--fd-plum);">Quick Preferences Selector</h3>
+                
+                <div class="mb-3">
+                    <label class="form-label small text-secondary">Cuisine Preference</label>
+                    <div class="fd-chip-group" id="chipGroupCuisine">
+                        <button type="button" class="fd-chip" data-target="pCuisine" data-val="Indian">Indian</button>
+                        <button type="button" class="fd-chip" data-target="pCuisine" data-val="Italian">Italian</button>
+                        <button type="button" class="fd-chip" data-target="pCuisine" data-val="Chinese">Chinese</button>
+                        <button type="button" class="fd-chip" data-target="pCuisine" data-val="Continental">Continental</button>
+                        <button type="button" class="fd-chip active" data-target="pCuisine" data-val="">Any</button>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label small text-secondary">Spice Level</label>
+                    <div class="fd-chip-group" id="chipGroupSpice">
+                        <button type="button" class="fd-chip" data-target="pSpice" data-val="Mild">Mild</button>
+                        <button type="button" class="fd-chip" data-target="pSpice" data-val="Medium">Medium</button>
+                        <button type="button" class="fd-chip" data-target="pSpice" data-val="Spicy">Spicy</button>
+                        <button type="button" class="fd-chip" data-target="pSpice" data-val="Very Spicy">Very Spicy</button>
+                        <button type="button" class="fd-chip active" data-target="pSpice" data-val="">Any</button>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label small text-secondary">Dietary / Food Type</label>
+                    <div class="fd-chip-group" id="chipGroupDiet">
+                        <button type="button" class="fd-chip" data-target="pFoodType" data-val="Veg">Veg</button>
+                        <button type="button" class="fd-chip" data-target="pFoodType" data-val="Non-Veg">Non-Veg</button>
+                        <button type="button" class="fd-chip" data-target="pFoodType" data-val="Vegan">Vegan</button>
+                        <button type="button" class="fd-chip" data-target="pDietary" data-val="Jain">Jain</button>
+                        <button type="button" class="fd-chip active" data-target="pFoodType" data-val="">Any</button>
+                    </div>
+                </div>
+
+                <div class="mb-2">
+                    <label class="form-label small text-secondary">Meal Budget</label>
+                    <div class="fd-chip-group" id="chipGroupBudget">
+                        <button type="button" class="fd-chip" data-target="pBudget" data-val="200">≤ ₹200</button>
+                        <button type="button" class="fd-chip" data-target="pBudget" data-val="350">≤ ₹350</button>
+                        <button type="button" class="fd-chip" data-target="pBudget" data-val="500">≤ ₹500</button>
+                        <button type="button" class="fd-chip active" data-target="pBudget" data-val="">No Limit</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detailed Preference Form -->
+            <div class="fd-card p-4 p-md-5">
+                <h2 class="h5 fw-bold mb-3" style="color: var(--fd-plum-dark);">Detailed Attributes</h2>
+                <form id="preferencesForm" novalidate hidden>
+                    <div class="row g-3">
+                        <div class="col-12 col-md-6">
+                            <label class="form-label" for="pCuisine">Cuisine</label>
+                            <select id="pCuisine" name="cuisine" class="form-select"><option value="">No preference</option></select>
+                            <div class="invalid-feedback" id="err-cuisine"></div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label class="form-label" for="pMealType">Meal type</label>
+                            <select id="pMealType" name="meal_type" class="form-select"><option value="">No preference</option></select>
+                            <div class="invalid-feedback" id="err-meal_type"></div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label class="form-label" for="pTaste">Taste</label>
+                            <select id="pTaste" name="taste" class="form-select"><option value="">No preference</option></select>
+                            <div class="invalid-feedback" id="err-taste"></div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label class="form-label" for="pSpice">Spice level</label>
+                            <select id="pSpice" name="spice_level" class="form-select"><option value="">No preference</option></select>
+                            <div class="invalid-feedback" id="err-spice_level"></div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label class="form-label" for="pPortion">Portion size</label>
+                            <select id="pPortion" name="portion_size" class="form-select"><option value="">No preference</option></select>
+                            <div class="invalid-feedback" id="err-portion_size"></div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label class="form-label" for="pBudget">Budget per meal (₹)</label>
+                            <input id="pBudget" name="budget" type="text" inputmode="decimal" maxlength="10" class="form-control" placeholder="e.g. 300 (leave empty for no limit)" autocomplete="off">
+                            <div class="form-text">Dearer dishes will be filtered out.</div>
+                            <div class="invalid-feedback" id="err-budget"></div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label class="form-label" for="pFoodType">Food type</label>
+                            <select id="pFoodType" name="food_type" class="form-select"><option value="">No preference</option></select>
+                            <div class="invalid-feedback" id="err-food_type"></div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label class="form-label" for="pDietary">Dietary preference</label>
+                            <select id="pDietary" name="dietary_preference" class="form-select"><option value="">No preference</option></select>
+                            <div class="invalid-feedback" id="err-dietary_preference"></div>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-wrap gap-2 mt-4">
+                        <button type="submit" id="saveButton" class="btn btn-fd px-4">Save Preferences</button>
+                        <button type="button" id="clearButton" class="btn btn-outline-secondary">Reset Fields</button>
+                    </div>
+                    <div class="small text-secondary mt-3" id="savedAt"></div>
+                </form>
+
+                <div id="afterSave" class="mt-4 pt-3 border-top" hidden>
+                    <a class="btn btn-fd" href="recommendations.html">See My Recommendations &rarr;</a>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/layout.js"></script>
+<script src="js/preferences.js"></script>
+<script>
+initPreferencesPage();
+
+// Wire quick chips to form controls
+document.querySelectorAll(".fd-chip[data-target]").forEach(chip => {
+    chip.addEventListener("click", () => {
+        const targetId = chip.dataset.target;
+        const targetVal = chip.dataset.val;
+        const targetEl = document.getElementById(targetId);
+
+        // Highlight active chip within group
+        chip.parentElement.querySelectorAll(".fd-chip").forEach(c => c.classList.remove("active"));
+        chip.classList.add("active");
+
+        if (targetEl) {
+            targetEl.value = targetVal;
+            targetEl.dispatchEvent(new Event("change"));
+        }
+    });
+});
+</script>
+</body>
+</html>
