@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Partner Restaurants - Food DNA</title>
+    <meta name="description" content="Explore approved restaurant kitchens partnered with Food DNA.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body class="fd-app-body">
+    <div class="fd-app-layout">
+        <!-- Dual-zone sidebar -->
+        <div id="sidebar"></div>
+
+        <div class="fd-content-wrapper">
+            <!-- Topbar -->
+            <div id="topbar"></div>
+
+            <main class="fd-main-content" id="mainContent">
+                <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+                    <div>
+                        <h1 class="fd-page-title mb-1">Partner Restaurants</h1>
+                        <div class="text-secondary small" id="restaurantSummary" aria-live="polite">Discover approved kitchens delivering to your area</div>
+                    </div>
+                    <form id="restaurantSearchForm" class="d-flex gap-2" role="search" style="min-width: 280px;">
+                        <input id="restaurantSearch" name="q" type="search" maxlength="100" class="form-control form-control-sm" placeholder="Search restaurant name..." aria-label="Search restaurants">
+                        <button class="btn btn-fd btn-sm" type="submit">Search</button>
+                    </form>
+                </div>
+
+                <div id="restaurantResults" aria-live="polite"></div>
+                <div id="restaurantPager" class="mt-4"></div>
+            </main>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/layout.js"></script>
+    <script src="js/browse.js"></script>
+    <script>initRestaurantList();</script>
+</body>
+</html>
