@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Status - Food DNA</title>
+    <meta name="description" content="Check the status of your Food DNA restaurant partner application.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body class="fd-auth-page">
+    <div id="navbar"></div>
+
+    <div class="fd-auth-container">
+        <!-- Visual Brand Side -->
+        <div class="fd-auth-visual">
+            <div class="fd-auth-brand-badge">
+                <span class="fs-4">🥗</span>
+                <span>Food DNA Partners</span>
+            </div>
+            <div class="fd-auth-tagline">
+                <h2>Application Tracking</h2>
+                <p>Review the real-time approval status and feedback notes left by platform super administrators.</p>
+            </div>
+            <div class="small text-white-50">
+                Approved accounts immediately gain access to order queues, dish catalog tools, and promotional features.
+            </div>
+        </div>
+
+        <!-- Form Side -->
+        <div class="fd-auth-form-wrapper">
+            <div class="fd-auth-header">
+                <h1 class="fd-auth-title">Check Application Status</h1>
+                <p class="fd-auth-subtitle">Enter the applicant email and password you used during registration.</p>
+            </div>
+
+            <div id="message"></div>
+
+            <form id="statusForm" novalidate>
+                <div class="mb-3">
+                    <label for="email" class="form-label small fw-semibold">Applicant Email</label>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="partner@gmail.com" required autocomplete="username">
+                </div>
+
+                <div class="mb-4">
+                    <label for="password" class="form-label small fw-semibold">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Your password" required autocomplete="current-password">
+                </div>
+
+                <button type="submit" id="submitButton" class="btn btn-fd w-100 py-2">Query Status</button>
+            </form>
+
+            <div id="result" class="mt-4"></div>
+
+            <div class="text-center mt-4 small">
+                <a href="login.html" class="text-secondary text-decoration-none">← Return to <strong style="color: var(--fd-primary);">Log In</strong></a>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/layout.js"></script>
+    <script>
+    document.getElementById("statusForm").addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const message = document.getElementById("message");
+        const resultBox = document.getElementById("result");
+        const button = document.getElementById("submitButton");
+        clearMessage(message);
+        clearMessage(resultBox);
+
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value;
+        if (!email || !password) {
+            return showMessage(message, "danger", "Please enter your email and password.");
+        }
+
+        setBusy(button, true, "Checking...");
+        const result = await apiRequest("/api/auth/application-status/check", {
+            method: "POST",
+            body: { email, password }
+        });
+        setBusy(button, false);
+
+        if (!result.ok) {
+            return showMessage(message, "danger", result.data.error || "Could not check status.");
+        }
+
+        const data = result.data;
+        const colours = { pending: "warning", approved: "success", rejected: "danger" };
+        const wrapper = document.createElement("div");
+        wrapper.className = "fd-card p-4 text-center mt-3";
+
+        const badge = document.createElement("span");
+        badge.className = `fd-badge fd-badge-${colours[data.status] || "neutral"} fs-6 px-3 py-2 text-uppercase`;
+        badge.textContent = data.status;
+        wrapper.appendChild(badge);
+
+        if (data.restaurant_name) {
+            const p = document.createElement("p");
+            p.className = "mt-3 mb-1 fw-bold";
+            p.textContent = "Restaurant: " + data.restaurant_name;
+            wrapper.appendChild(p);
+        }
+        if (data.remarks) {
+            const p = document.createElement("p");
+            p.className = "text-secondary small mt-2";
+            p.textContent = "Reviewer remarks: " + data.remarks;
+            wrapper.appendChild(p);
+        }
+        if (data.status === "approved") {
+            const p = document.createElement("div");
+            p.className = "mt-3";
+            const a = document.createElement("a");
+            a.href = "login.html";
+            a.className = "btn btn-fd btn-sm";
+            a.textContent = "Log In as Restaurant Admin →";
+            p.appendChild(a);
+            wrapper.appendChild(p);
+        }
+        resultBox.appendChild(wrapper);
+    });
+    </script>
+</body>
+</html>
