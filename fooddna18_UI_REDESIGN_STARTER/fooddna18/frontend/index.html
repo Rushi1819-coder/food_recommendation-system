@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food DNA - Smart Meal Recommendation System</title>
+    <meta name="description" content="Personalized healthy and delicious meals tailored to your taste, budget, and health goals.">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+<div id="navbar"></div>
+
+<main>
+    <!-- Hero Section -->
+    <section class="py-5" style="background: linear-gradient(135deg, #FFF8FA 0%, #FAF0F4 50%, #FAF7F5 100%);">
+        <div class="container py-lg-4">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-6">
+                    <div class="fd-hero-badge">
+                        <span>🌱</span> Smart Meal Recommendation System
+                    </div>
+                    <h1 class="display-4 fw-bold mb-3" style="color: var(--fd-plum-dark); line-height: 1.15;">
+                        Good Food,<br>
+                        <span style="color: var(--fd-rose);">Better You.</span>
+                    </h1>
+                    <p class="lead text-secondary mb-4" style="font-size: 1.15rem;">
+                        Discover personalized meals crafted precisely for your taste, dietary preferences, and budget. Food DNA learns what you love and delivers goodness to your door.
+                    </p>
+                    <div class="d-flex flex-wrap gap-3 mb-4" id="heroActionButtons">
+                        <a href="menu.html" class="btn btn-fd px-4 py-2" id="heroBrowseMenuBtn">
+                            Browse Food Menu
+                        </a>
+                        <a href="reverse-ordering.html" class="btn btn-fd-outline px-4 py-2" id="heroReverseBtn">
+                            Find by Craving ✨
+                        </a>
+                    </div>
+                    <div class="d-flex align-items-center gap-4 pt-3 border-top" style="border-color: var(--fd-border) !important;">
+                        <div>
+                            <div class="h4 fw-bold mb-0" style="color: var(--fd-plum);">100%</div>
+                            <small class="text-secondary">Tailored Matches</small>
+                        </div>
+                        <div class="border-start ps-4" style="border-color: var(--fd-border) !important;">
+                            <div class="h4 fw-bold mb-0" style="color: var(--fd-plum);">Fast</div>
+                            <small class="text-secondary">Doorstep Delivery</small>
+                        </div>
+                        <div class="border-start ps-4" style="border-color: var(--fd-border) !important;">
+                            <div class="h4 fw-bold mb-0" style="color: var(--fd-plum);">Fresh</div>
+                            <small class="text-secondary">Verified Kitchens</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 text-center">
+                    <div class="position-relative d-inline-block">
+                        <div style="width: 100%; max-width: 480px; aspect-ratio: 1; border-radius: 50%; overflow: hidden; box-shadow: 0 20px 50px rgba(74, 21, 37, 0.16); border: 8px solid #FFFFFF;">
+                            <img src="img/hero_bowl.jpg" alt="Artisanal Mediterranean Meal Bowl" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                        <!-- Floating Floating Pill -->
+                        <div class="position-absolute bg-white px-3 py-2 rounded-pill shadow-sm d-flex align-items-center gap-2 border" style="bottom: 20px; left: -10px; border-color: var(--fd-rose-light) !important;">
+                            <span style="font-size: 1.25rem;">✨</span>
+                            <div class="text-start">
+                                <div class="fw-bold" style="font-size: 0.85rem; color: var(--fd-plum);">Personalized DNA</div>
+                                <small class="text-secondary" style="font-size: 0.72rem;">Curated for your palate</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Value Propositions -->
+    <section class="py-5 bg-white border-top border-bottom" style="border-color: var(--fd-border) !important;">
+        <div class="container py-4">
+            <div class="text-center mb-5">
+                <span class="fd-badge fd-badge-pending mb-2">How It Works</span>
+                <h2 class="h2 fw-bold" style="color: var(--fd-plum-dark);">Nutrition Engineered for You</h2>
+                <p class="text-secondary">Three simple steps to healthier, tastier everyday dining.</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="fd-card p-4 h-100 fd-card-hover text-center">
+                        <div class="fd-stat-icon mx-auto mb-3" style="width: 56px; height: 56px; font-size: 1.5rem;">🧬</div>
+                        <h3 class="h5 fw-bold mb-2">1. Set Your Food DNA</h3>
+                        <p class="text-secondary small mb-0">Select your favorite cuisines, spice tolerances, dietary rules (Veg, Vegan, Jain), and budget constraints.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="fd-card p-4 h-100 fd-card-hover text-center">
+                        <div class="fd-stat-icon mx-auto mb-3" style="width: 56px; height: 56px; font-size: 1.5rem;">🔍</div>
+                        <h3 class="h5 fw-bold mb-2">2. Smart Recommendations</h3>
+                        <p class="text-secondary small mb-0">Our transparent scoring engine analyzes active menus to present dishes matching your unique health and flavor profile.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="fd-card p-4 h-100 fd-card-hover text-center">
+                        <div class="fd-stat-icon mx-auto mb-3" style="width: 56px; height: 56px; font-size: 1.5rem;">🚚</div>
+                        <h3 class="h5 fw-bold mb-2">3. Fresh Delivery</h3>
+                        <p class="text-secondary small mb-0">Order directly with one-restaurant-per-cart integrity, real-time live kitchen progression, and Cash on Delivery.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bottom Actions & Backend Connection Check -->
+    <section class="py-5" style="background: var(--fd-cream);">
+        <div class="container text-center py-3">
+            <div class="fd-card p-4 p-md-5 max-w-700 mx-auto" style="max-width: 680px;">
+                <h3 class="h4 fw-bold mb-2" style="color: var(--fd-plum-dark);">Join Food DNA Today</h3>
+                <p class="text-secondary mb-4">Start enjoying delicious, balanced meals tailored specifically for your lifestyle.</p>
+                <div class="d-flex flex-wrap gap-2 justify-content-center mb-4" id="homeActions">
+                    <a href="login.html" class="btn btn-fd px-4" id="homeLoginBtn">Log in</a>
+                    <a href="register.html" class="btn btn-fd-outline px-4" id="homeRegisterBtn">Create customer account</a>
+                    <a href="restaurant-admin-application.html" class="btn btn-fd-blush px-4" id="homeApplyBtn">Apply as Restaurant</a>
+                </div>
+                <hr style="border-color: var(--fd-border-light);">
+                <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 pt-2">
+                    <span class="small text-secondary">System Diagnostic:</span>
+                    <button id="checkApi" type="button" class="btn btn-outline-secondary btn-sm rounded-pill px-3">
+                        Check Backend & Database
+                    </button>
+                </div>
+                <div id="apiStatus" class="mt-3"></div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<script src="js/api.js"></script>
+<script src="js/layout.js"></script>
+<script>
+(async function () {
+    const user = await getCurrentUser();
+    const heroBtn = document.getElementById("heroBrowseMenuBtn");
+    const actions = document.getElementById("homeActions");
+
+    if (user) {
+        if (actions) {
+            actions.innerHTML = `
+                <a href="dashboard.html" class="btn btn-fd px-4">Go to My Dashboard (${user.full_name})</a>
+                <a href="menu.html" class="btn btn-fd-outline px-4">Browse Menu</a>
+            `;
+        }
+    }
+})();
+
+document.getElementById("checkApi").addEventListener("click", async () => {
+    const box = document.getElementById("apiStatus");
+    showMessage(box, "secondary", "Connecting to FoodDNA API...");
+    const health = await apiRequest("/api/health");
+    if (!health.ok) {
+        showMessage(box, "danger", health.data.error || "Cannot reach Flask backend on port 5000.");
+        return;
+    }
+    const dbCheck = await apiRequest("/api/health/db");
+    if (dbCheck.ok) {
+        showMessage(box, "success", "✓ Backend API and MySQL Database are fully connected and operating.");
+    } else {
+        showMessage(box, "warning", "Backend is running, but MySQL database is unreachable. Check your .env credentials.");
+    }
+});
+</script>
+</body>
+</html>
