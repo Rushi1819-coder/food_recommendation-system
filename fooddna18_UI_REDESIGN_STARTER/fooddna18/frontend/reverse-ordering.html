@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reverse Food Ordering - Food DNA</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="fd-app-layout">
+    <div id="sidebar"></div>
+
+    <div class="fd-main-wrapper">
+        <div id="topbar"></div>
+
+        <main class="fd-main-content">
+            <!-- Center Hero Banner (Matches Screen 13) -->
+            <div class="fd-card p-4 p-md-5 text-center mb-5" style="background: linear-gradient(135deg, #FFF9FA 0%, #FAF0F4 50%, #FFFFFF 100%); border: 1.5px solid var(--fd-rose-light);">
+                <div class="fd-stat-icon mx-auto mb-3" style="width: 60px; height: 60px; font-size: 1.75rem;">✨</div>
+                <h1 class="display-6 fw-bold mb-2" style="color: var(--fd-plum-dark);">Reverse Food Ordering</h1>
+                <p class="text-secondary mb-4 mx-auto" style="max-width: 580px; font-size: 1.05rem;">
+                    Tell us what you want to eat, and we'll show you the best options based on your cravings and preferences.
+                </p>
+
+                <!-- Natural Language Input -->
+                <form id="reverseForm" class="max-w-700 mx-auto" style="max-width: 620px;">
+                    <div class="input-group mb-3 shadow-sm" style="border-radius: var(--fd-radius-pill); overflow: hidden; border: 2px solid var(--fd-plum);">
+                        <input type="text" id="cravingInput" class="form-control border-0 px-4 py-3" placeholder="What are you in the mood for? (e.g. spicy paneer under 250)" required>
+                        <button class="btn btn-fd px-4 fw-bold" type="submit" id="searchBtn">
+                            Find Options
+                        </button>
+                    </div>
+
+                    <!-- Suggestion Chips -->
+                    <div class="d-flex flex-wrap justify-content-center gap-2 mt-3">
+                        <span class="small text-secondary align-self-center me-1">Try:</span>
+                        <button type="button" class="fd-chip btn-sm py-1 px-3 sample-craving" data-q="spicy paneer under 300">Spicy Paneer ≤ ₹300</button>
+                        <button type="button" class="fd-chip btn-sm py-1 px-3 sample-craving" data-q="healthy vegetarian salad">Healthy Veg Salad</button>
+                        <button type="button" class="fd-chip btn-sm py-1 px-3 sample-craving" data-q="chicken biryani">Chicken Biryani</button>
+                        <button type="button" class="fd-chip btn-sm py-1 px-3 sample-craving" data-q="vegan dinner under 200">Vegan Dinner ≤ ₹200</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Results Section -->
+            <div id="resultsHeader" class="d-none justify-content-between align-items-center mb-3">
+                <h3 class="h5 fw-bold mb-0" id="resultsTitle">Curated Matches</h3>
+                <span class="badge bg-light text-dark border" id="matchCount">0 dishes found</span>
+            </div>
+
+            <div id="resultsMessage" aria-live="polite"></div>
+            <div class="row g-4" id="reverseResultsGrid"></div>
+        </main>
+    </div>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/layout.js"></script>
+<script>
+(async function initReverseOrdering() {
+    const user = await requireLogin();
+    if (!user) return;
+
+    const form = document.getElementById("reverseForm");
+    const input = document.getElementById("cravingInput");
+    const grid = document.getElementById("reverseResultsGrid");
+    const header = document.getElementById("resultsHeader");
+    const title = document.getElementById("resultsTitle");
+    const count = document.getElementById("matchCount");
+    const msg = document.getElementById("resultsMessage");
+
+    // Sample buttons
+    document.querySelectorAll(".sample-craving").forEach(btn => {
+        btn.addEventListener("click", () => {
+            input.value = btn.dataset.q;
+            form.dispatchEvent(new Event("submit"));
+        });
+    });
+
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const query = input.value.trim();
+        if (!query) return;
+
+        clearMessage(msg);
+        header.classList.remove("d-none");
+        header.classList.add("d-flex");
+        title.textContent = `Matches for "${query}"`;
+        grid.innerHTML = `
+            <div class="col-12 text-center py-5 text-secondary">
+                <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                Analyzing kitchens for your craving...
+            </div>
+        `;
+
+        try {
+            const res = await reverseFoodSearch(query);
+            if (!res.ok) {
+                showMessage(msg, "danger", res.data.error || "Could not complete craving search.");
+                grid.innerHTML = "";
+                return;
+            }
+
+            const results = res.data.results || [];
+            count.textContent = `${results.length} dishes found`;
+
+            if (results.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-12">
+                        <div class="fd-card p-5 text-center">
+                            <h4 class="h5 fw-bold mb-2">No direct matches found</h4>
+                            <p class="text-secondary small mb-3">Try adjusting your keywords or price budget.</p>
+                            <a href="menu.html" class="btn btn-fd btn-sm">Explore All Available Dishes</a>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = "";
+            results.forEach(dish => {
+                const col = document.createElement("div");
+                col.className = "col-md-6 col-lg-4";
+                const imgUrl = dish.image_url || "img/paneer_tikka.jpg";
+
+                const reasonsHtml = (dish.match_reasons || []).map(r => `
+                    <span class="fd-badge fd-badge-pending mb-1" style="font-size: 0.72rem;">✓ ${r}</span>
+                `).join(" ");
+
+                col.innerHTML = `
+                    <div class="fd-meal-card">
+                        <div class="fd-meal-thumb">
+                            <img src="${imgUrl}" alt="${dish.name}" onerror="this.src='img/paneer_tikka.jpg'">
+                            <span class="fd-meal-badge-diet">${dish.food_type || 'Special'}</span>
+                            <span class="fd-meal-badge-rating">Score: ${dish.match_score}%</span>
+                        </div>
+                        <div class="fd-meal-info">
+                            <div class="fd-meal-title text-truncate">${dish.name}</div>
+                            <div class="small text-secondary mb-2">${dish.restaurant ? dish.restaurant.name : 'Kitchen'}</div>
+                            <div class="mb-2 d-flex flex-wrap gap-1">${reasonsHtml}</div>
+                            <div class="fd-meal-desc">${dish.description || ''}</div>
+                            <div class="fd-meal-footer">
+                                <div class="fd-meal-price">₹${dish.price}</div>
+                                <button type="button" class="btn btn-fd btn-sm px-3" data-id="${dish.id}" data-name="${dish.name}">
+                                    Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                col.querySelector("button").addEventListener("click", function() {
+                    handleAddToCart(this, dish.id, 1, dish.name);
+                });
+
+                grid.appendChild(col);
+            });
+
+        } catch (err) {
+            showMessage(msg, "danger", "Network error occurred.");
+            grid.innerHTML = "";
+        }
+    });
+})();
+</script>
+</body>
+</html>
