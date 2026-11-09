@@ -1,0 +1,51 @@
+USE fooddna;
+
+-- ============================================================================
+-- Phase 6 Migration 003: Enforce unique (cart_id, meal_id) on cart_items.
+-- ============================================================================
+-- An active customer cart must contain at most one line item per meal.
+-- Adding an existing meal increments that item's quantity rather than
+-- inserting duplicate rows.
+--
+-- ----------------------------------------------------------------------------
+-- PRE-MIGRATION INSPECTION (RUN BEFORE APPLYING ON EXISTING DATABASES):
+-- ----------------------------------------------------------------------------
+-- Before executing the ALTER TABLE statement on an existing database,
+-- verify that no duplicate rows currently exist:
+--
+--   SELECT
+--       cart_id,
+--       meal_id,
+--       COUNT(*) AS duplicate_count,
+--       GROUP_CONCAT(id ORDER BY id ASC) AS item_ids,
+--       SUM(quantity) AS consolidated_quantity
+--   FROM cart_items
+--   GROUP BY cart_id, meal_id
+--   HAVING COUNT(*) > 1;
+--
+-- SAFE DATA-PRESERVING RESOLUTION PROCEDURE (IF DUPLICATES EXIST):
+-- If duplicate rows are found, DO NOT delete or merge records silently.
+-- Instead, follow this safe resolution workflow:
+-- 1. For each (cart_id, meal_id) group with duplicates:
+--    Identify the primary row ID (e.g. MIN(id)) and sum the quantities:
+--    UPDATE cart_items c1
+--    JOIN (
+--        SELECT MIN(id) AS keep_id, SUM(quantity) AS total_qty
+--        FROM cart_items
+--        GROUP BY cart_id, meal_id
+--        HAVING COUNT(*) > 1
+--    ) dupes ON c1.id = dupes.keep_id
+--    SET c1.quantity = dupes.total_qty;
+--
+-- 2. Remove ONLY the redundant duplicate rows that have now been merged:
+--    DELETE c1 FROM cart_items c1
+--    INNER JOIN cart_items c2
+--    WHERE c1.cart_id = c2.cart_id
+--      AND c1.meal_id = c2.meal_id
+--      AND c1.id > c2.id;
+--
+-- 3. Verify that the inspection query now returns 0 rows.
+-- ----------------------------------------------------------------------------
+
+ALTER TABLE cart_items
+    ADD CONSTRAINT uq_cart_items_cart_meal UNIQUE (cart_id, meal_id);
