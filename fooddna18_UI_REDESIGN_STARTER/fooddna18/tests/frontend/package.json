@@ -1,0 +1,11 @@
+{
+  "name": "fooddna-frontend-checks",
+  "private": true,
+  "description": "Optional developer tool: runs the real pages in headless Chromium against a stand-in API (mock_browser_check.js).",
+  "scripts": {
+    "check": "node mock_browser_check.js"
+  },
+  "devDependencies": {
+    "playwright": "^1.50.0"
+  }
+}
