@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Your Order - Food DNA</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="fd-app-layout">
+    <div id="sidebar"></div>
+
+    <div class="fd-main-wrapper">
+        <div id="topbar"></div>
+
+        <main class="fd-main-content">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
+                <div>
+                    <h1 class="h2 fw-bold mb-1" style="color: var(--fd-plum-dark);">Track Your Order</h1>
+                    <p class="text-secondary mb-0">Real-time status updates from kitchen to your doorstep.</p>
+                </div>
+                <a href="orders.html" class="btn btn-fd-outline btn-sm">
+                    &larr; Back to My Orders
+                </a>
+            </div>
+
+            <div id="orderDetailMessage" aria-live="polite"></div>
+            <div id="orderDetailContent" aria-live="polite">
+                <div class="text-center py-5 text-secondary">
+                    <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                    Loading order tracking details...
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/layout.js"></script>
+<script src="js/order-details.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        initOrderDetailsPage();
+    });
+</script>
+</body>
+</html>
