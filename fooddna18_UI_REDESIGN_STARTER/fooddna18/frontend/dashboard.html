@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Dashboard - Food DNA</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="fd-app-layout">
+    <!-- Left Persistent Sidebar -->
+    <div id="sidebar"></div>
+
+    <!-- Main Wrapper -->
+    <div class="fd-main-wrapper">
+        <div id="topbar"></div>
+
+        <main class="fd-main-content">
+            <!-- Greeting & Notification -->
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
+                <div>
+                    <h1 class="h2 fw-bold mb-1" id="greetingHeader" style="color: var(--fd-plum-dark);">Welcome Back!</h1>
+                    <p class="text-secondary mb-0" id="greetingSub">Here's what's cooking for you today.</p>
+                </div>
+                <div class="d-flex gap-2">
+                    <a href="reverse-ordering.html" class="btn btn-fd-blush btn-sm">
+                        <span>✨</span> Reverse Order Craving
+                    </a>
+                    <a href="menu.html" class="btn btn-fd btn-sm">
+                        Explore Full Menu
+                    </a>
+                </div>
+            </div>
+
+            <!-- Active Order Tracking Banner (if any) -->
+            <div id="activeOrderBanner" class="mb-4" style="display: none;"></div>
+
+            <!-- "Your Food DNA" Hero Card (Matches Screen 3) -->
+            <div class="fd-dashboard-hero">
+                <div class="row align-items-center g-4">
+                    <div class="col-md-7">
+                        <div class="fd-hero-badge">
+                            <span>🧬</span> Your Food DNA
+                        </div>
+                        <h2 class="h3 fw-bold mb-2" style="color: var(--fd-plum-dark);">Flavor Profile & Nutrition Focus</h2>
+                        <p class="text-secondary small mb-3">
+                            Tailored based on your dietary lifestyle, favorite cuisines, spice levels, and budget.
+                        </p>
+                        <!-- Preference Chips Display -->
+                        <div class="d-flex flex-wrap gap-2 mb-4" id="heroPreferenceChips">
+                            <span class="fd-chip active">All Cuisines</span>
+                            <span class="fd-chip active">Medium Spice</span>
+                            <span class="fd-chip active">Standard Budget</span>
+                        </div>
+                        <a href="preferences.html" class="btn btn-fd btn-sm px-4">
+                            Update Preferences
+                        </a>
+                    </div>
+                    <div class="col-md-5 text-center text-md-end">
+                        <div style="width: 220px; height: 220px; border-radius: 50%; overflow: hidden; display: inline-block; box-shadow: 0 12px 30px rgba(74, 21, 37, 0.15); border: 5px solid #FFFFFF;">
+                            <img src="img/hero_bowl.jpg" alt="Your Food DNA" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recommended For You Section (Matches Screen 3) -->
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div>
+                    <h3 class="h4 fw-bold mb-0" style="color: var(--fd-plum-dark);">Recommended for You</h3>
+                    <small class="text-secondary">Scored by your taste and health preferences</small>
+                </div>
+                <a href="recommendations.html" class="small fw-bold" style="color: var(--fd-rose);">View All &rsaquo;</a>
+            </div>
+
+            <!-- Meal Cards Grid -->
+            <div class="row g-3 g-md-4 mb-5" id="recommendationsGrid">
+                <div class="col-12 text-center py-4 text-secondary">
+                    <div class="spinner-border spinner-border-sm text-secondary me-2" role="status"></div>
+                    Loading personalized recommendations...
+                </div>
+            </div>
+
+            <!-- Quick Metrics & Recent Orders Row -->
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <div class="fd-card p-4 h-100">
+                        <h4 class="h5 fw-bold mb-3" style="color: var(--fd-plum-dark);">Your Activity</h4>
+                        <div class="d-flex flex-column gap-3" id="userActivityStats">
+                            <div class="d-flex justify-content-between align-items-center p-3 rounded-3" style="background: var(--fd-blush-soft);">
+                                <span class="small fw-semibold text-secondary">Total Orders Placed</span>
+                                <span class="fw-bold" id="statOrdersTotal" style="color: var(--fd-plum);">0</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center p-3 rounded-3" style="background: var(--fd-blush-soft);">
+                                <span class="small fw-semibold text-secondary">Active Deliveries</span>
+                                <span class="fw-bold" id="statOrdersActive" style="color: var(--fd-plum);">0</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center p-3 rounded-3" style="background: var(--fd-blush-soft);">
+                                <span class="small fw-semibold text-secondary">Items in Cart</span>
+                                <span class="fw-bold" id="statCartCount" style="color: var(--fd-plum);">0</span>
+                            </div>
+                        </div>
+                        <div class="mt-4 pt-3 border-top" style="border-color: var(--fd-border-light) !important;">
+                            <a href="food-memory.html" class="small fw-bold text-decoration-none" style="color: var(--fd-plum);">
+                                🕒 View Your Food Memory Timeline &rarr;
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-8">
+                    <div class="fd-card p-4 h-100">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h4 class="h5 fw-bold mb-0" style="color: var(--fd-plum-dark);">Recent Orders</h4>
+                            <a href="orders.html" class="small fw-bold" style="color: var(--fd-rose);">View All Orders &rsaquo;</a>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="fd-table" id="recentOrdersTable">
+                                <thead>
+                                    <tr>
+                                        <th>Order ID</th>
+                                        <th>Restaurant</th>
+                                        <th>Date</th>
+                                        <th>Amount</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="recentOrdersBody">
+                                    <tr>
+                                        <td colspan="6" class="text-center text-secondary py-3">Loading orders...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/layout.js"></script>
+<script>
+(async function initCustomerDashboard() {
+    const user = await requireLogin();
+    if (!user) return;
+
+    // Route other roles to their specialized dashboards
+    if (user.role === "restaurant_admin") { window.location.href = "restaurant-management.html"; return; }
+    if (user.role === "staff") { window.location.href = "staff-dashboard.html"; return; }
+    if (user.role === "delivery_partner") { window.location.href = "delivery-dashboard.html"; return; }
+    if (user.role === "super_admin") { window.location.href = "admin-dashboard.html"; return; }
+
+    // Set Greeting
+    const hour = new Date().getHours();
+    const timeGreeting = hour < 12 ? "Good Morning" : hour < 17 ? "Good Afternoon" : "Good Evening";
+    document.getElementById("greetingHeader").textContent = `${timeGreeting}, ${user.full_name.split(' ')[0]}!`;
+
+    // 1. Load User Preferences for Food DNA Card
+    try {
+        const prefRes = await apiRequest("/api/preferences");
+        if (prefRes.ok && prefRes.data.preferences) {
+            const p = prefRes.data.preferences;
+            const chipsBox = document.getElementById("heroPreferenceChips");
+            chipsBox.innerHTML = "";
+            const activePrefs = [];
+            if (p.cuisine) activePrefs.push(p.cuisine);
+            if (p.spice_level) activePrefs.push(`${p.spice_level} Spice`);
+            if (p.dietary_preference) activePrefs.push(p.dietary_preference);
+            if (p.food_type) activePrefs.push(p.food_type);
+            if (p.max_budget) activePrefs.push(`Budget ≤ ₹${p.max_budget}`);
+
+            if (activePrefs.length > 0) {
+                activePrefs.forEach(tag => {
+                    const span = document.createElement("span");
+                    span.className = "fd-chip active";
+                    span.textContent = tag;
+                    chipsBox.appendChild(span);
+                });
+            } else {
+                chipsBox.innerHTML = '<span class="fd-chip">No preferences set yet &mdash; click to configure</span>';
+            }
+        }
+    } catch (e) {}
+
+    // 2. Load Recommendations
+    const recGrid = document.getElementById("recommendationsGrid");
+    try {
+        const recRes = await apiRequest("/api/recommendations");
+        if (recRes.ok && recRes.data.recommendations && recRes.data.recommendations.length > 0) {
+            recGrid.innerHTML = "";
+            const items = recRes.data.recommendations.slice(0, 4);
+            items.forEach(rec => {
+                const meal = rec.meal || rec;
+                const col = document.createElement("div");
+                col.className = "col-6 col-lg-3";
+                const imgUrl = meal.image_url || "img/paneer_tikka.jpg";
+
+                col.innerHTML = `
+                    <div class="fd-meal-card">
+                        <div class="fd-meal-thumb">
+                            <img src="${imgUrl}" alt="${meal.name}" onerror="this.src='img/paneer_tikka.jpg'">
+                            <span class="fd-meal-badge-diet">${meal.food_type || 'Special'}</span>
+                            <span class="fd-meal-badge-rating">★ 4.8</span>
+                        </div>
+                        <div class="fd-meal-info">
+                            <div class="fd-meal-title text-truncate">${meal.name}</div>
+                            <div class="fd-meal-desc">${meal.cuisine || ''} &bull; ${meal.description || 'Freshly prepared specialty dish.'}</div>
+                            <div class="fd-meal-footer">
+                                <div class="fd-meal-price">₹${meal.price}</div>
+                                <button type="button" class="btn btn-fd btn-sm px-3" data-id="${meal.id}" data-name="${meal.name}">
+                                    Add
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                col.querySelector("button").addEventListener("click", function() {
+                    handleAddToCart(this, meal.id, 1, meal.name);
+                });
+                recGrid.appendChild(col);
+            });
+        } else {
+            // Fallback to general meals
+            const mealsRes = await apiRequest("/api/meals?page_size=4");
+            if (mealsRes.ok && mealsRes.data.meals && mealsRes.data.meals.length > 0) {
+                recGrid.innerHTML = "";
+                mealsRes.data.meals.forEach(meal => {
+                    const col = document.createElement("div");
+                    col.className = "col-6 col-lg-3";
+                    const imgUrl = meal.image_url || "img/paneer_tikka.jpg";
+                    col.innerHTML = `
+                        <div class="fd-meal-card">
+                            <div class="fd-meal-thumb">
+                                <img src="${imgUrl}" alt="${meal.name}" onerror="this.src='img/paneer_tikka.jpg'">
+                                <span class="fd-meal-badge-diet">${meal.food_type || 'Special'}</span>
+                                <span class="fd-meal-badge-rating">★ 4.7</span>
+                            </div>
+                            <div class="fd-meal-info">
+                                <div class="fd-meal-title text-truncate">${meal.name}</div>
+                                <div class="fd-meal-desc">${meal.cuisine || ''} &bull; ${meal.description || 'Delicious freshly made recipe.'}</div>
+                                <div class="fd-meal-footer">
+                                    <div class="fd-meal-price">₹${meal.price}</div>
+                                    <button type="button" class="btn btn-fd btn-sm px-3" data-id="${meal.id}" data-name="${meal.name}">
+                                        Add
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    col.querySelector("button").addEventListener("click", function() {
+                        handleAddToCart(this, meal.id, 1, meal.name);
+                    });
+                    recGrid.appendChild(col);
+                });
+            } else {
+                recGrid.innerHTML = `
+                    <div class="col-12">
+                        <div class="fd-card p-4 text-center">
+                            <p class="text-secondary mb-2">No recommendations available yet.</p>
+                            <a href="menu.html" class="btn btn-fd btn-sm">Browse All Menus</a>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+    } catch (e) {
+        recGrid.innerHTML = '<div class="col-12 text-center text-danger">Could not load recommendations.</div>';
+    }
+
+    // 3. Load Customer Dashboard Stats & Recent Orders
+    try {
+        const dashRes = await apiRequest("/api/dashboard/customer");
+        if (dashRes.ok && dashRes.data.summary) {
+            const s = dashRes.data.summary;
+            document.getElementById("statOrdersTotal").textContent = s.orders_total;
+            document.getElementById("statOrdersActive").textContent = s.orders_active;
+            document.getElementById("statCartCount").textContent = s.cart_item_count;
+
+            const tbody = document.getElementById("recentOrdersBody");
+            if (s.recent_orders && s.recent_orders.length > 0) {
+                tbody.innerHTML = "";
+                s.recent_orders.forEach(order => {
+                    const tr = document.createElement("tr");
+                    const dateStr = order.placed_at ? new Date(order.placed_at).toLocaleDateString() : "—";
+                    const statusClass = `fd-badge-${order.status}`;
+                    tr.innerHTML = `
+                        <td><strong>#${order.id}</strong></td>
+                        <td>${order.restaurant_name || 'Restaurant'}</td>
+                        <td class="small text-secondary">${dateStr}</td>
+                        <td class="fw-bold" style="color: var(--fd-plum);">₹${order.total_amount}</td>
+                        <td><span class="fd-badge ${statusClass}">${order.status.replace('_', ' ')}</span></td>
+                        <td><a href="order-details.html?id=${order.id}" class="btn btn-fd-outline btn-sm py-1 px-2" style="font-size:0.78rem;">Track</a></td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+
+                // Check active order for top banner
+                const activeOrder = s.recent_orders.find(o => !["delivered", "cancelled"].includes(o.status));
+                if (activeOrder) {
+                    const banner = document.getElementById("activeOrderBanner");
+                    banner.style.display = "block";
+                    banner.innerHTML = `
+                        <div class="fd-card p-3 d-flex align-items-center justify-content-between flex-wrap gap-3" style="background: linear-gradient(90deg, #FDF2F5 0%, #FFFFFF 100%); border-left: 5px solid var(--fd-rose);">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="fd-stat-icon" style="background: #FFFFFF;">🛵</div>
+                                <div>
+                                    <div class="fw-bold" style="color: var(--fd-plum-dark);">Active Order #${activeOrder.id} &bull; ${activeOrder.restaurant_name}</div>
+                                    <small class="text-secondary">Current Status: <strong class="text-capitalize" style="color: var(--fd-rose);">${activeOrder.status.replace('_', ' ')}</strong></small>
+                                </div>
+                            </div>
+                            <a href="order-details.html?id=${activeOrder.id}" class="btn btn-fd btn-sm">Track Live Order &rarr;</a>
+                        </div>
+                    `;
+                }
+            } else {
+                tbody.innerHTML = '<tr><td colspan="6" class="text-center text-secondary py-3">No orders placed yet. <a href="menu.html">Order your first meal!</a></td></tr>';
+            }
+        }
+    } catch (e) {}
+})();
+</script>
+</body>
+</html>
